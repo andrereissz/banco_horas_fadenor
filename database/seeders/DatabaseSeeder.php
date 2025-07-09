@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'André Alves dos Reis',
             'username' => 'andre.reis',
             'password' => 'admin',
+            'role' => 'admin',
             'email' => 'test@example.com',
         ]);
     }
