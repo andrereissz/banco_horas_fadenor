@@ -13,6 +13,7 @@ class Bolsista extends Model
         // Vínculo
         'user_id',
         'status_solicitacao',
+        'token',
 
         // Dados pessoais
         'nome',
