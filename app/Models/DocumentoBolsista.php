@@ -11,8 +11,9 @@ class DocumentoBolsista extends Model
 
     protected $fillable = [
         'bolsista_id',
+        'tipo',
+        'nome',
         'caminho',
-        'documento'
     ];
 
     public function bolsista()
