@@ -10,6 +10,7 @@ class DocumentoBolsista extends Model
     use HasUuids;
 
     public $incrementing = false;
+    protected $table = "bolsista_documentos";
     protected $keyType = 'string';
 
     protected $fillable = [
