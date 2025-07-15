@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Bolsista extends Model
+class Bolsa extends Model
 {
     use HasUuids;
 
@@ -57,13 +59,13 @@ class Bolsista extends Model
     ];
 
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function documentos()
+    public function documentos(): HasMany
     {
-        return $this->hasMany(DocumentoBolsista::class);
+        return $this->hasMany(Documento::class);
     }
 }

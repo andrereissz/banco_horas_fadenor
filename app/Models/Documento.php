@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentoBolsista extends Model
+class Documento extends Model
 {
     use HasUuids;
 
     public $incrementing = false;
-    protected $table = "bolsista_documentos";
+    protected $table = "bolsa_documentos";
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -20,8 +20,8 @@ class DocumentoBolsista extends Model
         'caminho',
     ];
 
-    public function bolsista()
+    public function bolsas()
     {
-        return $this->belongsTo(Bolsista::class);
+        return $this->belongsTo(Bolsa::class);
     }
 }
