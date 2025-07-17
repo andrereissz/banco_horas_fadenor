@@ -23,6 +23,11 @@ class BolsaService implements BolsaServiceInterface
         return Bolsa::where('id', $uuid)->firstOrFail();
     }
 
+    public function findBolsaByToken(string $token): ?Bolsa
+    {
+        return Bolsa::where('token', $token)->first();
+    }
+
     public function create(array $data): Bolsa
     {
         $data['uuid'] = Str::uuid();
@@ -66,15 +71,18 @@ class BolsaService implements BolsaServiceInterface
         return $bolsa;
     }
 
-    public function registrar(array $data, array $files): Bolsa
+    public function registrar(string $token, array $data, array $files): Bolsa
     {
-        $bolsa = $this->create($data);
+
+        $bolsa = Bolsa::where('token', $token)->firstOrFail();
+        $this->update($bolsa, $data);
         $this->updateStatus($bolsa, 1);
         foreach ($files as $file) {
             if($file instanceof UploadedFile){
                 $bolsa->documentos()->create([
                     'nome' => $file->getClientOriginalName(),
-                    'caminho' => $file->store('documentos/'.$bolsa->id)
+                    'caminho' => $file->store('documentos/'.$bolsa->id),
+                    'tipo' => $data['tipo']
                 ]);
             }
         }

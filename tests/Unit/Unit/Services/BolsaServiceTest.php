@@ -45,6 +45,14 @@ class BolsaServiceTest extends TestCase
         $this->assertEquals($bolsa->id, $result->id);
     }
 
+    public function test_find_bolsa_by_token()
+    {
+        $bolsa = Bolsa::factory()->create();
+        $result = $this->service->findBolsaByToken($bolsa->token);
+
+        $this->assertEquals($bolsa->id, $result->id);
+    }
+
     public function test_create_bolsa()
     {
         $user = User::factory()->create();
