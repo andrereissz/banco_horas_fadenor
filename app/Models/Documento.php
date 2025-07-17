@@ -13,7 +13,7 @@ class Documento extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'bolsista_id',
+        'bolsa_id',
         'tipo',
         'nome',
         'caminho',
