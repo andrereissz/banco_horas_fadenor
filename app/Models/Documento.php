@@ -10,7 +10,6 @@ class Documento extends Model
     use HasUuids;
 
     public $incrementing = false;
-    protected $table = "bolsa_documentos";
     protected $keyType = 'string';
 
     protected $fillable = [
