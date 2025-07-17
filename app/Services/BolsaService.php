@@ -20,7 +20,7 @@ class BolsaService implements BolsaServiceInterface
 
     public function find(string $uuid): Bolsa
     {
-        return Bolsa::where('uuid', $uuid)->firstOrFail();
+        return Bolsa::where('id', $uuid)->firstOrFail();
     }
 
     public function create(array $data): Bolsa
@@ -29,7 +29,7 @@ class BolsaService implements BolsaServiceInterface
         $data['user_id'] = Auth::user()->id;
         $bolsa = Bolsa::create(
             [
-                'uuid' => $data['uuid'],
+                'id' => $data['uuid'],
                 'user_id' => $data['user_id'],
                 'nome' => $data['nome'],
                 'token' => $data['token']
