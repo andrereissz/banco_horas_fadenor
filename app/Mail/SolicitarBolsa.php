@@ -15,18 +15,20 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitarBolsa extends Mailable
 {
-    public Bolsa $bolsa;
-    public array $files;
+    private Bolsa $bolsa;
+    private array $paths;
+    private string $authenticatedUserMail;
 
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Bolsa $bolsa, array $files)
+    public function __construct(Bolsa $bolsa, string $authenticatedUserMail,array $paths)
     {
+        $this->authenticatedUserMail = $authenticatedUserMail;
         $this->bolsa = $bolsa;
-        $this->files = $files;
+        $this->paths = $paths;
     }
 
     /**
@@ -36,8 +38,8 @@ class SolicitarBolsa extends Mailable
     {
         return new Envelope(
             subject: 'Solicitação de Bolsa',
-            from: Auth::user()->email,
-            replyTo: Auth::user()->email
+            from: $this->authenticatedUserMail,
+            replyTo: $this->authenticatedUserMail
         );
     }
 
@@ -49,7 +51,8 @@ class SolicitarBolsa extends Mailable
         return new Content(
             view: 'mail.bolsa',
             with: [
-                'bolsa' => $this->bolsa->nome,
+                'bolsa' => $this->bolsa,
+                'authenticatedUserMail' => $this->authenticatedUserMail
             ]
         );
     }
@@ -67,12 +70,8 @@ class SolicitarBolsa extends Mailable
 
         $attachments[] = Attachment::fromData(fn() => $pdf->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
 
-        foreach ($this->files as $file) {
-            if($file instanceof UploadedFile){
-                $attachments[] = Attachment::fromPath($file->getRealPath())
-                    ->as($file->getClientOriginalName())
-                    ->withMime($file->getClientMimeType());
-            }
+        foreach ($this->paths as $path) {
+            $attachments[] = Attachment::fromStorageDisk('tmp', $path)->withMime('application/pdf');
         }
 
         return $attachments;
