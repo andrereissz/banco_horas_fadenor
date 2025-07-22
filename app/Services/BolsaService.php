@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendSolicitacaoMail;
 use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use Illuminate\Database\Eloquent\Collection;
@@ -37,7 +38,8 @@ class BolsaService implements BolsaServiceInterface
                 'id' => $data['uuid'],
                 'user_id' => $data['user_id'],
                 'nome' => $data['nome'],
-                'token' => $data['token']
+                'token' => $data['token'],
+                'tipo' => 1,
             ]
         );
 
@@ -61,12 +63,20 @@ class BolsaService implements BolsaServiceInterface
 
     public function solicitar(array $data, array $files): Bolsa
     {
+        $paths = [];
+
         $bolsa = $this->create(array(
             'nome' => $data['nome'],
-            'token' => Str::uuid(),
+            'token' => Str::uuid()
         ));
 
-        Mail::to($data['emailCoordenador'])->send(new SolicitarBolsa($bolsa, $files));
+        foreach ($files as $file) {
+            if($file instanceof UploadedFile){
+                $paths[] = Storage::disk('tmp')->putFile('uploads', $file);
+            }
+        }
+
+        SendSolicitacaoMail::dispatch( $bolsa, $data['emailCoordenador'], Auth::user()->email, $paths);
 
         return $bolsa;
     }
