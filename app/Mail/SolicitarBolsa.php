@@ -15,9 +15,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitarBolsa extends Mailable
 {
-    private Bolsa $bolsa;
-    private array $paths;
-    private string $authenticatedUserMail;
+    public Bolsa $bolsa;
+    public array $paths;
+    public string $authenticatedUserMail;
 
     use Queueable, SerializesModels;
 
