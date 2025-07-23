@@ -33,17 +33,13 @@ class BolsaService implements BolsaServiceInterface
     {
         $data['uuid'] = Str::uuid();
         $data['user_id'] = Auth::user()->id;
-        $bolsa = Bolsa::create(
-            [
-                'id' => $data['uuid'],
-                'user_id' => $data['user_id'],
-                'nome' => $data['nome'],
-                'token' => $data['token'],
-                'tipo' => 1,
-            ]
-        );
-
-        return $bolsa;
+        return Bolsa::create([
+            'id' => $data['uuid'],
+            'user_id' => $data['user_id'],
+            'nome' => $data['nome'],
+            'token' => $data['token'],
+            'tipo' => 1,
+        ]);
     }
 
     public function update(Bolsa $bolsa, array $data): bool
@@ -61,29 +57,36 @@ class BolsaService implements BolsaServiceInterface
         return $bolsa->update(['status' => $newStatus]);
     }
 
-    public function solicitar(array $data, array $files): Bolsa
+    public function solicitar(array $data, array $uploadedFiles): Bolsa
     {
-        $paths = [];
-
-        $bolsa = $this->create(array(
+        $temporaryPaths = [];
+        $bolsa = $this->create([
             'nome' => $data['nome'],
-            'token' => Str::uuid()
-        ));
+            'token' => Str::uuid(),
+        ]);
 
-        foreach ($files as $file) {
-            if($file instanceof UploadedFile){
-                $paths[] = Storage::disk('tmp')->putFile('uploads', $file);
+        foreach ($uploadedFiles as $uploadedFile) {
+            if ($uploadedFile instanceof UploadedFile) {
+                $temporaryPaths[] = Storage::disk('tmp')->putFile('uploads', $uploadedFile);
             }
         }
 
-        SendSolicitacaoMail::dispatch( $bolsa, $data['emailCoordenador'], Auth::user()->email, $paths);
+        try {
+            SendSolicitacaoMail::dispatch(
+                Auth::user(),
+                $bolsa,
+                $data['emailCoordenador'],
+                $temporaryPaths
+            );
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         return $bolsa;
     }
 
     public function registrar(string $token, array $data, array $files): Bolsa
     {
-
         $bolsa = Bolsa::where('token', $token)->firstOrFail();
         $this->update($bolsa, $data);
         $this->updateStatus($bolsa, 1);

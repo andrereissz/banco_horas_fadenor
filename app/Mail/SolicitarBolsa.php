@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Bolsa;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Mail\Attachment;
@@ -15,18 +16,19 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitarBolsa extends Mailable
 {
-    public Bolsa $bolsa;
-    public array $paths;
-    public string $authenticatedUserMail;
+    protected User $authenticatedUser;
+    protected Bolsa $bolsa;
+    protected array $paths;
+
 
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Bolsa $bolsa, string $authenticatedUserMail,array $paths)
+    public function __construct(User $authenticatedUser, Bolsa $bolsa, array $paths)
     {
-        $this->authenticatedUserMail = $authenticatedUserMail;
+        $this->authenticatedUser = $authenticatedUser;
         $this->bolsa = $bolsa;
         $this->paths = $paths;
     }
@@ -38,8 +40,8 @@ class SolicitarBolsa extends Mailable
     {
         return new Envelope(
             subject: 'Solicitação de Bolsa',
-            from: $this->authenticatedUserMail,
-            replyTo: $this->authenticatedUserMail
+            from: $this->authenticatedUser->email,
+            replyTo: $this->authenticatedUser->email
         );
     }
 
@@ -52,7 +54,7 @@ class SolicitarBolsa extends Mailable
             view: 'mail.bolsa',
             with: [
                 'bolsa' => $this->bolsa,
-                'authenticatedUserMail' => $this->authenticatedUserMail
+                'user' => $this->authenticatedUser
             ]
         );
     }
