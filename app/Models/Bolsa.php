@@ -17,6 +17,7 @@ class Bolsa extends Model
         'user_id',
         'status',
         'token',
+        'tipo',
 
         // Dados pessoais
         'nome',
