@@ -15,9 +15,16 @@ class Bolsa extends Model
     protected $fillable = [
         // Vínculo
         'user_id',
-        'status',
+
+        // Dados da bolsa
         'token',
+        'status',
+        'projeto_cod',
+        'projeto_nome',
+        'projeto_num',
         'tipo',
+        'data_inicio',
+        'data_fim',
 
         // Dados pessoais
         'nome',
