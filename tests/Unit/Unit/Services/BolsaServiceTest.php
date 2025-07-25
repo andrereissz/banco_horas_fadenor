@@ -66,7 +66,8 @@ class BolsaServiceTest extends TestCase
             'projeto_num' => 'APQ-09512',
             'tipo' => 1,
             'data_inicio' => '2025-07-01',
-            'data_fim' => '2026-07-01'
+            'data_fim' => '2026-07-01',
+            'valor' => '100000'
         ];
 
         $bolsa = $this->service->create($data);
@@ -126,7 +127,8 @@ class BolsaServiceTest extends TestCase
             'projetoNum' => 'APQ-09512',
             'tipo' => 1,
             'dataInicio' => '2025-07-01',
-            'dataFim' => '2026-07-01'
+            'dataFim' => '2026-07-01',
+            'valor' => '100000'
         ];
 
         $files = [UploadedFile::fake()->create('documento.pdf')];

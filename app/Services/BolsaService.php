@@ -60,7 +60,8 @@ class BolsaService implements BolsaServiceInterface
             'tipo' => $data['tipo'],
             'nome' => $data['nome'],
             'data_inicio' => $data['dataInicio'],
-            'data_fim' => $data['dataFim']
+            'data_fim' => $data['dataFim'],
+            'valor' => $data['valor'],
         ]);
 
         foreach ($uploadedFiles as $uploadedFile) {

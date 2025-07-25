@@ -25,6 +25,7 @@ class Bolsa extends Model
         'tipo',
         'data_inicio',
         'data_fim',
+        'valor',
 
         // Dados pessoais
         'nome',
@@ -63,7 +64,11 @@ class Bolsa extends Model
         'certificado_reservista',
 
         // Banco
+        'banco_nome',
+        'banco_cod',
         'agencia',
+        'agencia_digito',
+        'conta_digito',
         'conta',
     ];
 
