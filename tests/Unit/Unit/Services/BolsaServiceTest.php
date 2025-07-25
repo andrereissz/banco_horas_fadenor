@@ -11,7 +11,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class BolsaServiceTest extends TestCase
@@ -119,15 +118,15 @@ class BolsaServiceTest extends TestCase
         Auth::shouldReceive('user')->andReturn($user);
 
         $data = [
-            'user_id' => Auth::user()->id,
+            'userId' => Auth::user()->id,
             'nome' => 'Solicitação',
             'emailCoordenador' => 'coord@example.com',
-            'projeto_cod' => '111',
-            'projeto_nome' => 'projeto teste',
-            'projeto_num' => 'APQ-09512',
+            'projetoCod' => '111',
+            'projetoNome' => 'projeto teste',
+            'projetoNum' => 'APQ-09512',
             'tipo' => 1,
-            'data_inicio' => '2025-07-01',
-            'data_fim' => '2026-07-01'
+            'dataInicio' => '2025-07-01',
+            'dataFim' => '2026-07-01'
         ];
 
         $files = [UploadedFile::fake()->create('documento.pdf')];

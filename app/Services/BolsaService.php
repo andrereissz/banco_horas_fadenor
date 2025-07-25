@@ -54,15 +54,15 @@ class BolsaService implements BolsaServiceInterface
         $temporaryPaths = [];
         $bolsa = $this->create([
             'id' => Str::uuid(),
-            'user_id' => isset($data['user_id']) ? $data['user_id'] : Auth::user()->id,
+            'user_id' => isset($data['userId']) ? $data['userId'] : Auth::user()->id,
             'token' => Str::uuid(),
-            'projeto_cod' => $data['projeto_cod'],
-            'projeto_nome' => $data['projeto_nome'],
-            'projeto_num' => $data['projeto_num'],
+            'projeto_cod' => $data['projetoCod'],
+            'projeto_nome' => $data['projetoNome'],
+            'projeto_num' => $data['projetoNum'],
             'tipo' => $data['tipo'],
             'nome' => $data['nome'],
-            'data_inicio' => $data['data_inicio'],
-            'data_fim' => $data['data_fim']
+            'data_inicio' => $data['dataInicio'],
+            'data_fim' => $data['dataFim']
         ]);
 
         foreach ($uploadedFiles as $uploadedFile) {
