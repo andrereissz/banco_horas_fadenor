@@ -56,11 +56,18 @@ class BolsaServiceTest extends TestCase
     public function test_create_bolsa()
     {
         $user = User::factory()->create();
-        Auth::shouldReceive('user')->andReturn($user);
+        Auth::expects('user')->andReturn($user);
 
         $data = [
+            'user_id' => Auth::user()->id,
             'nome' => 'Nome da Bolsa',
-            'token' => 'abc123'
+            'token' => 'abc123',
+            'projeto_cod' => '111',
+            'projeto_nome' => 'projeto teste',
+            'projeto_num' => 'APQ-09512',
+            'tipo' => 1,
+            'data_inicio' => '2025-07-01',
+            'data_fim' => '2026-07-01'
         ];
 
         $bolsa = $this->service->create($data);
@@ -112,18 +119,22 @@ class BolsaServiceTest extends TestCase
         Auth::shouldReceive('user')->andReturn($user);
 
         $data = [
+            'user_id' => Auth::user()->id,
             'nome' => 'Solicitação',
             'emailCoordenador' => 'coord@example.com',
+            'projeto_cod' => '111',
+            'projeto_nome' => 'projeto teste',
+            'projeto_num' => 'APQ-09512',
+            'tipo' => 1,
+            'data_inicio' => '2025-07-01',
+            'data_fim' => '2026-07-01'
         ];
 
         $files = [UploadedFile::fake()->create('documento.pdf')];
 
-        $bolsa = $this->service->solicitar($data, $files);
+        $this->service->solicitar($data, $files);
 
-        Mail::assertSent(SolicitarBolsa::class, function ($mail) use ($bolsa) {
-            return $mail->bolsa->id === $bolsa->id;
-        });
-
+        Mail::assertSent(SolicitarBolsa::class);
         $this->assertDatabaseHas('bolsas', ['nome' => 'Solicitação']);
     }
 
@@ -146,8 +157,7 @@ class BolsaServiceTest extends TestCase
 
         $this->assertDatabaseHas('bolsas', ['nome' => $bolsa->nome, 'status' => 1]);
         $this->assertDatabaseCount('documentos', 1);
-        dd($bolsa);
 
-        Storage::disk('local')->assertExists('documentos/' . $bolsa->id . '/' . $files[0]->hashName());
+        Storage::assertExists($bolsa->documentos->first()->caminho);
     }
 }

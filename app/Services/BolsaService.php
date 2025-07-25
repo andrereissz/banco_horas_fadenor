@@ -31,15 +31,7 @@ class BolsaService implements BolsaServiceInterface
 
     public function create(array $data): Bolsa
     {
-        $data['uuid'] = Str::uuid();
-        $data['user_id'] = Auth::user()->id;
-        return Bolsa::create([
-            'id' => $data['uuid'],
-            'user_id' => $data['user_id'],
-            'nome' => $data['nome'],
-            'token' => $data['token'],
-            'tipo' => 1,
-        ]);
+        return Bolsa::create($data);
     }
 
     public function update(Bolsa $bolsa, array $data): bool
@@ -61,8 +53,16 @@ class BolsaService implements BolsaServiceInterface
     {
         $temporaryPaths = [];
         $bolsa = $this->create([
-            'nome' => $data['nome'],
+            'id' => Str::uuid(),
+            'user_id' => isset($data['user_id']) ? $data['user_id'] : Auth::user()->id,
             'token' => Str::uuid(),
+            'projeto_cod' => $data['projeto_cod'],
+            'projeto_nome' => $data['projeto_nome'],
+            'projeto_num' => $data['projeto_num'],
+            'tipo' => $data['tipo'],
+            'nome' => $data['nome'],
+            'data_inicio' => $data['data_inicio'],
+            'data_fim' => $data['data_fim']
         ]);
 
         foreach ($uploadedFiles as $uploadedFile) {

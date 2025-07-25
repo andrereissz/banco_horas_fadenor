@@ -22,6 +22,12 @@ class BolsaFactory extends Factory
             'user_id' => 1,
             'token' => Str::uuid(),
             'nome' => $this->faker->name(),
+            'projeto_cod' => '111',
+            'projeto_nome' => 'projeto teste',
+            'projeto_num' => 'APQ-09512',
+            'tipo' => 1,
+            'data_inicio' => '2025-07-01',
+            'data_fim' => '2026-07-01'
         ];
     }
 }
