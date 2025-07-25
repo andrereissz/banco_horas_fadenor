@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\Jobs\SendSolicitacaoMail;
-use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
