@@ -50,6 +50,11 @@ class BolsaService implements BolsaServiceInterface
     public function solicitar(array $data, array $uploadedFiles): Bolsa
     {
         $temporaryPaths = [];
+
+        if(str_contains($data['valor'], ',')){
+            $data['valor'] = str_replace(',', '.', $data['valor']);
+        }
+
         $bolsa = $this->create([
             'id' => Str::uuid(),
             'user_id' => isset($data['userId']) ? $data['userId'] : Auth::user()->id,
@@ -61,7 +66,7 @@ class BolsaService implements BolsaServiceInterface
             'nome' => $data['nome'],
             'data_inicio' => $data['dataInicio'],
             'data_fim' => $data['dataFim'],
-            'valor' => $data['valor'],
+            'valor' => (float)$data['valor'] * 100,
         ]);
 
         foreach ($uploadedFiles as $uploadedFile) {
