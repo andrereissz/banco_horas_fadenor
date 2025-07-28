@@ -5,13 +5,11 @@ namespace App\Mail;
 use App\Models\Bolsa;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitarBolsa extends Mailable
