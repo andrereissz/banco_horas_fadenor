@@ -49,7 +49,7 @@ class SolicitarBolsa extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.bolsa',
+            view: 'mail.solicitar-bolsa-mail',
             with: [
                 'bolsa' => $this->bolsa,
                 'user' => $this->authenticatedUser
