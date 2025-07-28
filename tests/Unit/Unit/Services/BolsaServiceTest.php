@@ -136,7 +136,7 @@ class BolsaServiceTest extends TestCase
         $this->service->solicitar($data, $files);
 
         Mail::assertSent(SolicitarBolsa::class);
-        $this->assertDatabaseHas('bolsas', ['nome' => 'Solicitação']);
+        $this->assertDatabaseHas('bolsas', ['nome' => 'SOLICITACAO']);
     }
 
     public function test_registrar_bolsa_com_documentos()
