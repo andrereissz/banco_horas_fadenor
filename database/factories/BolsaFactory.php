@@ -26,6 +26,7 @@ class BolsaFactory extends Factory
             'projeto_nome' => 'projeto teste',
             'projeto_num' => 'APQ-09512',
             'tipo' => 1,
+            'valor' => '100000',
             'data_inicio' => '2025-07-01',
             'data_fim' => '2026-07-01'
         ];

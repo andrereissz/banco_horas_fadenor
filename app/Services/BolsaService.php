@@ -63,10 +63,10 @@ class BolsaService implements BolsaServiceInterface
             'projeto_nome' => $data['projetoNome'],
             'projeto_num' => $data['projetoNum'],
             'tipo' => $data['tipo'],
-            'nome' => $data['nome'],
+            'nome' => $this->formataText($data['nome']),
             'data_inicio' => $data['dataInicio'],
             'data_fim' => $data['dataFim'],
-            'valor' => (float)$data['valor'] * 100,
+            'valor' => (integer)((float)$data['valor'] * 100),
         ]);
 
         foreach ($uploadedFiles as $uploadedFile) {
@@ -105,5 +105,10 @@ class BolsaService implements BolsaServiceInterface
         }
 
         return $bolsa;
+    }
+
+    public function formataText(string $text): string
+    {
+        return str::upper(str::slug($text, ' ', 'pt_BR'));
     }
 }
