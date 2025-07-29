@@ -16,7 +16,6 @@ class SolicitarBolsa extends Mailable
 {
     protected User $authenticatedUser;
     protected Bolsa $bolsa;
-    protected array $paths;
 
 
     use Queueable, SerializesModels;
@@ -24,11 +23,10 @@ class SolicitarBolsa extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(User $authenticatedUser, Bolsa $bolsa, array $paths)
+    public function __construct(User $authenticatedUser, Bolsa $bolsa)
     {
         $this->authenticatedUser = $authenticatedUser;
         $this->bolsa = $bolsa;
-        $this->paths = $paths;
     }
 
     /**
@@ -76,11 +74,6 @@ class SolicitarBolsa extends Mailable
             $attachments[] = Attachment::fromPath(storage_path('app/documentos/doc_atestado_frequencia.docx'))
                 ->as('Atestado de Frequência - BOLSISTA.docx')
                 ->withMime('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        }
-
-
-        foreach ($this->paths as $path) {
-            $attachments[] = Attachment::fromStorageDisk('tmp', $path)->withMime('application/pdf');
         }
 
         return $attachments;

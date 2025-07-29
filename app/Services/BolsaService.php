@@ -47,7 +47,7 @@ class BolsaService implements BolsaServiceInterface
         return $bolsa->update(['status' => $newStatus]);
     }
 
-    public function solicitar(array $data, array $uploadedFiles): Bolsa
+    public function solicitar(array $data): Bolsa
     {
         $temporaryPaths = [];
 
@@ -69,18 +69,11 @@ class BolsaService implements BolsaServiceInterface
             'valor' => (integer)((float)$data['valor'] * 100),
         ]);
 
-        foreach ($uploadedFiles as $uploadedFile) {
-            if ($uploadedFile instanceof UploadedFile) {
-                $temporaryPaths[] = Storage::disk('tmp')->putFile('uploads', $uploadedFile);
-            }
-        }
-
         try {
             SendSolicitacaoMail::dispatch(
                 Auth::user(),
                 $bolsa,
-                $data['emailDestinatario'],
-                $temporaryPaths
+                $data['emailDestinatario']
             );
         } catch (\Exception $e) {
             throw $e;

@@ -21,8 +21,6 @@ class SolicitarBolsaForm extends Component
     public string $valor = '';
     public string $dataInicio = '';
     public string $dataFim = '';
-    public ?UploadedFile $docLgpd = null;
-    public ?UploadedFile $docTermoBolsa = null;
 
     protected function rules(): array
     {
@@ -36,7 +34,6 @@ class SolicitarBolsaForm extends Component
             'valor' => 'required|numeric',
             'dataInicio' => 'required|date',
             'dataFim' => 'required|date|after:dataInicio',
-            'docTermoBolsa' => 'required|file|mimes:pdf|max:5120'
         ];
     }
 
@@ -51,7 +48,6 @@ class SolicitarBolsaForm extends Component
             'valor' => 'Valor da Bolsa',
             'dataInicio' => 'Data de Início',
             'dataFim' => 'Data de Fim',
-            'docTermoBolsa' => 'Termo de Bolsa'
         ];
     }
 
@@ -68,10 +64,7 @@ class SolicitarBolsaForm extends Component
         try {
             $validatedData = $this->validate();
 
-            $bolsaService->solicitar($validatedData, [
-                $this->docLgpd,
-                $this->docTermoBolsa
-            ]);
+            $bolsaService->solicitar($validatedData);
 
             flash()->success('Bolsa solicitada com sucesso!');
 
