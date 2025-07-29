@@ -75,7 +75,7 @@ class SolicitarBolsaForm extends Component
 
             flash()->success('Bolsa solicitada com sucesso!');
 
-            $this->redirect(route('bolsas.index'));
+            $this->redirect(route('bolsas.create'));
 
         } catch (\Exception $e) {
             flash()->error('Ocorreu um erro inesperado: ' . $e->getMessage());
