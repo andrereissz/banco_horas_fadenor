@@ -66,9 +66,16 @@ class SolicitarBolsa extends Mailable
     {
         $attachments = [];
 
-        $pdf = PDF::loadView('pdfs.doc_heteroidentificacao');
+        $doc_heteroidentificacao = PDF::loadView('pdfs.doc_heteroidentificacao');
+        $doc_lgpd = PDF::loadView('pdfs.doc_termo_lgpd');
 
-        $attachments[] = Attachment::fromData(fn() => $pdf->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
+        $attachments[] = Attachment::fromData(fn() => $doc_heteroidentificacao->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
+        $attachments[] = Attachment::fromData(fn() => $doc_lgpd->output(), 'doc_termo_lgpd.pdf')->withMime('application/pdf');
+
+        if($this->bolsa->tipo == 1) {
+            $attachments[] = Attachment::fromPath('app/pdfs/doc_atestado_frequencia.docx', 'Atestado de Frequência.docx');
+        }
+
 
         foreach ($this->paths as $path) {
             $attachments[] = Attachment::fromStorageDisk('tmp', $path)->withMime('application/pdf');
