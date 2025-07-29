@@ -17,20 +17,20 @@ class SendSolicitacaoMail implements ShouldQueue
 
     protected $bolsaService;
     protected $bolsa;
-    protected $emailCoordenador;
+    protected $emailDestinatario;
     protected $authenticatedUser;
     protected $paths = [];
 
     /**
      * Create a new job instance.
      */
-    public function __construct(User $authenticatedUser, Bolsa $bolsa, string $emailCoordenador, array $paths)
+    public function __construct(User $authenticatedUser, Bolsa $bolsa, string $emailDestinatario, array $paths)
     {
         $this->bolsaService = new BolsaService();
 
         $this->authenticatedUser = $authenticatedUser;
         $this->bolsa = $bolsa;
-        $this->emailCoordenador = $emailCoordenador;
+        $this->emailDestinatario = $emailDestinatario;
         $this->paths = $paths;
     }
 
@@ -42,7 +42,7 @@ class SendSolicitacaoMail implements ShouldQueue
         $disk = Storage::disk('tmp');
 
         try {
-            Mail::to($this->emailCoordenador)
+            Mail::to($this->emailDestinatario)
                 ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa, $this->paths));
 
                 $this->bolsaService->updateStatus($this->bolsa, 1);
@@ -50,7 +50,7 @@ class SendSolicitacaoMail implements ShouldQueue
             foreach ($this->paths as $path) {
                 $disk->delete($path);
             }
-            
+
             $this->bolsaService->updateStatus($this->bolsa, 4);
             throw $e;
         }

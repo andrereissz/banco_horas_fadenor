@@ -121,7 +121,7 @@ class BolsaServiceTest extends TestCase
         $data = [
             'userId' => Auth::user()->id,
             'nome' => 'Solicitação',
-            'emailCoordenador' => 'coord@example.com',
+            'emailDestinatario' => 'coord@example.com',
             'projetoCod' => '111',
             'projetoNome' => 'projeto teste',
             'projetoNum' => 'APQ-09512',

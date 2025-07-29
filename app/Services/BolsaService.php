@@ -79,7 +79,7 @@ class BolsaService implements BolsaServiceInterface
             SendSolicitacaoMail::dispatch(
                 Auth::user(),
                 $bolsa,
-                $data['emailCoordenador'],
+                $data['emailDestinatario'],
                 $temporaryPaths
             );
         } catch (\Exception $e) {

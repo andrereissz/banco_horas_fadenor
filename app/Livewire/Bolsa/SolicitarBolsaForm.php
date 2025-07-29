@@ -16,7 +16,7 @@ class SolicitarBolsaForm extends Component
     public string $projetoCod = '';
     public string $projetoNome = '';
     public string $projetoNum = '';
-    public string $emailCoordenador = '';
+    public string $emailDestinatario = '';
     public string $nome = '';
     public string $valor = '';
     public string $dataInicio = '';
@@ -30,8 +30,8 @@ class SolicitarBolsaForm extends Component
             'tipo' => ['required', 'integer', Rule::in([0, 1])],
             'projetoCod' => 'required',
             'projetoNome' => 'required',
-            'projetoNum' => 'required',
-            'emailCoordenador' => 'required|email',
+            'projetoNum' => [Rule::requiredIf(fn() => $this->tipo === 1)],
+            'emailDestinatario' => 'required|email',
             'nome' => 'required',
             'valor' => 'required|numeric',
             'dataInicio' => 'required|date',
@@ -46,7 +46,7 @@ class SolicitarBolsaForm extends Component
             'projetoCod' => 'Código do Projeto',
             'projetoNome' => 'Nome do Projeto',
             'projetoNum' => 'Número do Projeto',
-            'emailCoordenador' => 'Email do Coordenador',
+            'emailDestinatario' => 'Email do Destinatário',
             'nome' => 'Nome do Bolsista',
             'valor' => 'Valor da Bolsa',
             'dataInicio' => 'Data de Início',
@@ -75,7 +75,7 @@ class SolicitarBolsaForm extends Component
 
             flash()->success('Bolsa solicitada com sucesso!');
 
-            $this->redirect(route('bolsas.create'));
+            $this->redirect(route('solicitar-bolsa'));
 
         } catch (\Exception $e) {
             flash()->error('Ocorreu um erro inesperado: ' . $e->getMessage());
