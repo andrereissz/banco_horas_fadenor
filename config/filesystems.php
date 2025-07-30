@@ -60,6 +60,21 @@ return [
             'report' => false,
         ],
 
+        'documentos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/documentos'),
+            'private' => true,
+            'visibility' => 'private',
+            'throw' => false,
+        ],
+
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tmp'),
+            'private' => true,
+            'visibility' => 'private',
+        ]
+
     ],
 
     /*

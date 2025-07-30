@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('administrar bolsa')
+                        <x-nav-link :href="route('solicitar-bolsa')" :active="request()->routeIs('bolsas.create')">
+                            Solicitar Bolsa
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
