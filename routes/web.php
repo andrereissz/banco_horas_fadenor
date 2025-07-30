@@ -18,5 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/solicitar-bolsa', function () {
+    return view('bolsas.create');
+})->middleware(['auth', 'verified', 'can:administrar bolsa'])->name('solicitar-bolsa');
+
+
 
 require __DIR__.'/auth.php';
