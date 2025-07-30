@@ -47,10 +47,10 @@ class SolicitarBolsa extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.solicitar-bolsa-mail',
+            view: $this->bolsa->tipo == 0 ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
             with: [
                 'bolsa' => $this->bolsa,
-                'user' => $this->authenticatedUser
+                'user' => $this->authenticatedUser,
             ]
         );
     }
@@ -70,7 +70,7 @@ class SolicitarBolsa extends Mailable
         $attachments[] = Attachment::fromData(fn() => $doc_heteroidentificacao->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
         $attachments[] = Attachment::fromData(fn() => $doc_lgpd->output(), 'doc_termo_lgpd.pdf')->withMime('application/pdf');
 
-        if($this->bolsa->tipo == 1) {
+        if ($this->bolsa->tipo == 1) {
             $attachments[] = Attachment::fromPath(storage_path('app/documentos/doc_atestado_frequencia.docx'))
                 ->as('Atestado de Frequência - BOLSISTA.docx')
                 ->withMime('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
