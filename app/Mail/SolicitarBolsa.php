@@ -4,19 +4,19 @@ namespace App\Mail;
 
 use App\Models\Bolsa;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitarBolsa extends Mailable
 {
     protected User $authenticatedUser;
-    protected Bolsa $bolsa;
 
+    protected Bolsa $bolsa;
 
     use Queueable, SerializesModels;
 
@@ -67,8 +67,8 @@ class SolicitarBolsa extends Mailable
         $doc_heteroidentificacao = PDF::loadView('pdfs.doc_heteroidentificacao');
         $doc_lgpd = PDF::loadView('pdfs.doc_termo_lgpd');
 
-        $attachments[] = Attachment::fromData(fn() => $doc_heteroidentificacao->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
-        $attachments[] = Attachment::fromData(fn() => $doc_lgpd->output(), 'doc_termo_lgpd.pdf')->withMime('application/pdf');
+        $attachments[] = Attachment::fromData(fn () => $doc_heteroidentificacao->output(), 'doc_heteroidentificacao.pdf')->withMime('application/pdf');
+        $attachments[] = Attachment::fromData(fn () => $doc_lgpd->output(), 'doc_termo_lgpd.pdf')->withMime('application/pdf');
 
         if ($this->bolsa->tipo == 1) {
             $attachments[] = Attachment::fromPath(storage_path('app/documentos/doc_atestado_frequencia.docx'))

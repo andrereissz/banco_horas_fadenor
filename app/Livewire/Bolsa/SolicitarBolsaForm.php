@@ -3,7 +3,6 @@
 namespace App\Livewire\Bolsa;
 
 use App\Services\BolsaService;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -13,13 +12,21 @@ class SolicitarBolsaForm extends Component
     use WithFileUploads;
 
     public int $tipo = 0;
+
     public string $projetoCod = '';
+
     public string $projetoNome = '';
+
     public string $projetoNum = '';
+
     public string $emailDestinatario = '';
+
     public string $nome = '';
+
     public string $valor = '';
+
     public string $dataInicio = '';
+
     public string $dataFim = '';
 
     protected function rules(): array
@@ -28,7 +35,7 @@ class SolicitarBolsaForm extends Component
             'tipo' => ['required', 'integer', Rule::in([0, 1])],
             'projetoCod' => 'required',
             'projetoNome' => 'required',
-            'projetoNum' => [Rule::requiredIf(fn() => $this->tipo === 1)],
+            'projetoNum' => [Rule::requiredIf(fn () => $this->tipo === 1)],
             'emailDestinatario' => 'required|email',
             'nome' => 'required',
             'valor' => 'required|numeric',
@@ -55,7 +62,7 @@ class SolicitarBolsaForm extends Component
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
-            'after:dataInicio' => 'A data de fim deve ser posterior à data de início.'
+            'after:dataInicio' => 'A data de fim deve ser posterior à data de início.',
         ];
     }
 
@@ -71,7 +78,7 @@ class SolicitarBolsaForm extends Component
             $this->redirect(route('solicitar-bolsa'));
 
         } catch (\Exception $e) {
-            flash()->error('Ocorreu um erro inesperado: ' . $e->getMessage());
+            flash()->error('Ocorreu um erro inesperado: '.$e->getMessage());
         }
     }
 

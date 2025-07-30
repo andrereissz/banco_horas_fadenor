@@ -9,15 +9,17 @@ use App\Services\BolsaService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class SendSolicitacaoMail implements ShouldQueue
 {
     use Queueable;
 
     protected $bolsaService;
+
     protected $bolsa;
+
     protected $emailDestinatario;
+
     protected $authenticatedUser;
 
     /**
@@ -25,7 +27,7 @@ class SendSolicitacaoMail implements ShouldQueue
      */
     public function __construct(User $authenticatedUser, Bolsa $bolsa, string $emailDestinatario)
     {
-        $this->bolsaService = new BolsaService();
+        $this->bolsaService = new BolsaService;
 
         $this->authenticatedUser = $authenticatedUser;
         $this->bolsa = $bolsa;
@@ -40,7 +42,7 @@ class SendSolicitacaoMail implements ShouldQueue
         try {
             Mail::to($this->emailDestinatario)
                 ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa));
-                
+
             $this->bolsaService->updateStatus($this->bolsa, 1);
         } catch (\Exception $e) {
             throw $e;

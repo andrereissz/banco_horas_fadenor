@@ -7,7 +7,6 @@ use App\Models\Bolsa;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BolsaService implements BolsaServiceInterface
@@ -51,7 +50,7 @@ class BolsaService implements BolsaServiceInterface
     {
         $temporaryPaths = [];
 
-        if(str_contains($data['valor'], ',')){
+        if (str_contains($data['valor'], ',')) {
             $data['valor'] = str_replace(',', '.', $data['valor']);
         }
 
@@ -66,7 +65,7 @@ class BolsaService implements BolsaServiceInterface
             'nome' => $this->formataText($data['nome']),
             'data_inicio' => $data['dataInicio'],
             'data_fim' => $data['dataFim'],
-            'valor' => (integer)((float)$data['valor'] * 100),
+            'valor' => (int) ((float) $data['valor'] * 100),
         ]);
 
         try {
@@ -88,11 +87,11 @@ class BolsaService implements BolsaServiceInterface
         $this->update($bolsa, $data);
         $this->updateStatus($bolsa, 1);
         foreach ($files as $file) {
-            if($file instanceof UploadedFile){
+            if ($file instanceof UploadedFile) {
                 $bolsa->documentos()->create([
                     'nome' => $file->getClientOriginalName(),
                     'caminho' => $file->store('documentos/'.$bolsa->id),
-                    'tipo' => $data['tipo']
+                    'tipo' => $data['tipo'],
                 ]);
             }
         }

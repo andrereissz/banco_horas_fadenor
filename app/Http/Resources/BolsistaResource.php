@@ -53,7 +53,7 @@ class BolsistaResource extends JsonResource
                 'rg_data_emissao' => $this->rg_data_emissao,
                 'certificado_reservista' => $this->certificado_reservista,
                 'agencia' => $this->agencia,
-                'conta' => $this->conta
+                'conta' => $this->conta,
             ]);
         }
 

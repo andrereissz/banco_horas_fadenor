@@ -22,7 +22,7 @@ class BolsaServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new BolsaService();
+        $this->service = new BolsaService;
         User::factory()->create();
     }
 
@@ -67,7 +67,7 @@ class BolsaServiceTest extends TestCase
             'tipo' => 1,
             'data_inicio' => '2025-07-01',
             'data_fim' => '2026-07-01',
-            'valor' => '100000'
+            'valor' => '100000',
         ];
 
         $bolsa = $this->service->create($data);
@@ -128,7 +128,7 @@ class BolsaServiceTest extends TestCase
             'tipo' => 1,
             'dataInicio' => '2025-07-01',
             'dataFim' => '2026-07-01',
-            'valor' => '100000'
+            'valor' => '100000',
         ];
 
         $files = [UploadedFile::fake()->create('documento.pdf')];
@@ -150,7 +150,7 @@ class BolsaServiceTest extends TestCase
             'nome_pai' => 'João',
             'estado_civil' => 1,
             'raca_cor' => 1,
-            'tipo' => "teste",
+            'tipo' => 'teste',
         ];
 
         $files = [UploadedFile::fake()->create('arquivo1.pdf')];

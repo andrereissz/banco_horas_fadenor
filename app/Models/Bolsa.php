@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bolsa extends Model
 {
-    use HasUuids, HasFactory;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         // Vínculo
@@ -71,7 +71,6 @@ class Bolsa extends Model
         'conta_digito',
         'conta',
     ];
-
 
     public function user(): BelongsTo
     {

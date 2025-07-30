@@ -73,7 +73,7 @@ return [
             'root' => storage_path('app/tmp'),
             'private' => true,
             'visibility' => 'private',
-        ]
+        ],
 
     ],
 
