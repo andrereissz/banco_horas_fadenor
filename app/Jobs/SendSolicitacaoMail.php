@@ -37,16 +37,18 @@ class SendSolicitacaoMail implements ShouldQueue
      */
     public function handle(): void
     {
-        $disk = Storage::disk('tmp');
-
         try {
             Mail::to($this->emailDestinatario)
                 ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa));
-
-                $this->bolsaService->updateStatus($this->bolsa, 1);
+                
+            $this->bolsaService->updateStatus($this->bolsa, 1);
         } catch (\Exception $e) {
-            $this->bolsaService->updateStatus($this->bolsa, 4);
             throw $e;
         }
+    }
+
+    public function failed(\Throwable $exception): void
+    {
+        $this->bolsaService->updateStatus($this->bolsa, 5);
     }
 }
