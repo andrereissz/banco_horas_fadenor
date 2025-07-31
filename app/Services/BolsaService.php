@@ -57,7 +57,7 @@ class BolsaService implements BolsaServiceInterface
         $bolsa = $this->create([
             'id' => Str::uuid(),
             'user_id' => isset($data['userId']) ? $data['userId'] : Auth::user()->id,
-            'token' => Str::uuid(),
+            'token' => Str::random(32),
             'projeto_cod' => $data['projetoCod'],
             'projeto_nome' => $data['projetoNome'],
             'projeto_num' => $data['projetoNum'],
