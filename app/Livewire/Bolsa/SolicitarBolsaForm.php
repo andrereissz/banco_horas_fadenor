@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Bolsa;
 
+use App\Enums\BolsaTipo;
+use App\Models\Bolsa;
 use App\Services\BolsaService;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -11,7 +13,7 @@ class SolicitarBolsaForm extends Component
 {
     use WithFileUploads;
 
-    public int $tipo = 0;
+    public int $tipo = BolsaTipo::FADENOR->value;
 
     public string $projetoCod = '';
 
@@ -32,10 +34,10 @@ class SolicitarBolsaForm extends Component
     protected function rules(): array
     {
         return [
-            'tipo' => ['required', 'integer', Rule::in([0, 1])],
+            'tipo' => ['required', 'integer', Rule::enum(BolsaTipo::class)],
             'projetoCod' => 'required',
             'projetoNome' => 'required',
-            'projetoNum' => [Rule::requiredIf(fn () => $this->tipo === 1)],
+            'projetoNum' => [Rule::requiredIf(fn () => $this->tipo == BolsaTipo::FAPEMIG->value)],
             'emailDestinatario' => 'required|email',
             'nome' => 'required',
             'valor' => 'required|numeric',
@@ -78,12 +80,14 @@ class SolicitarBolsaForm extends Component
             $this->redirect(route('solicitar-bolsa'));
 
         } catch (\Exception $e) {
-            flash()->error('Ocorreu um erro inesperado: '.$e->getMessage());
+            flash()->error($e->getMessage());
         }
     }
 
     public function render()
     {
-        return view('livewire.bolsa.solicitar-bolsa-form');
+        return view('livewire.bolsa.solicitar-bolsa-form', [
+            'tipos' => BolsaTipo::cases(),
+        ]);
     }
 }

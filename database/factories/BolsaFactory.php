@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\BolsaTipo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -25,7 +26,7 @@ class BolsaFactory extends Factory
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
             'projeto_num' => 'APQ-09512',
-            'tipo' => 1,
+            'tipo' => BolsaTipo::FAPEMIG->value,
             'valor' => '100000',
             'data_inicio' => '2025-07-01',
             'data_fim' => '2026-07-01',

@@ -151,13 +151,13 @@ class BolsaServiceTest extends TestCase
             'nome_pai' => 'João',
             'estado_civil' => 1,
             'raca_cor' => 1,
-            'tipo' => 'teste',
+            'tipo' => 1,
         ];
 
         $files = [UploadedFile::fake()->create('arquivo1.pdf')];
         $bolsa = $this->service->registrar($bolsa->token, $data, $files);
 
-        $this->assertDatabaseHas('bolsas', ['nome' => $bolsa->nome, 'status' => 1]);
+        $this->assertDatabaseHas('bolsas', ['nome' => $bolsa->nome, 'status' => BolsaStatus::Respondido->value]);
         $this->assertDatabaseCount('documentos', 1);
 
         Storage::assertExists($bolsa->documentos->first()->caminho);

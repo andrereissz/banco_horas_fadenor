@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BolsaStatus;
+use App\Enums\BolsaTipo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ class Bolsa extends Model
 
     protected $casts = [
         'status' => BolsaStatus::class,
+        'tipo' => BolsaTipo::class
     ];
 
     protected $fillable = [
@@ -85,5 +87,14 @@ class Bolsa extends Model
     public function documentos(): HasMany
     {
         return $this->hasMany(Documento::class);
+    }
+
+    public function scopeSearch($query, string $search)
+    {
+        return $query->where('nome', 'like', "%{$search}%")
+            ->orWhere('projeto_cod', 'like', "%{$search}%")
+            ->orWhere('projeto_nome', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->orWhere('cpf', 'like', "%{$search}%");
     }
 }

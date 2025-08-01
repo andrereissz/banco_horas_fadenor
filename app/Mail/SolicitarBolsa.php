@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Enums\BolsaTipo;
 use App\Models\Bolsa;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -47,7 +48,7 @@ class SolicitarBolsa extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: $this->bolsa->tipo == 0 ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
+            view: $this->bolsa->tipo == BolsaTipo::FADENOR->value ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
             with: [
                 'bolsa' => $this->bolsa,
                 'user' => $this->authenticatedUser,
