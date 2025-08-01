@@ -86,8 +86,6 @@ class SolicitarBolsaForm extends Component
 
     public function render()
     {
-        return view('livewire.bolsa.solicitar-bolsa-form', [
-            'tipos' => BolsaTipo::cases(),
-        ]);
+        return view('livewire.bolsa.solicitar-bolsa-form');
     }
 }
