@@ -109,7 +109,7 @@ class BolsaServiceTest extends TestCase
 
         $this->service->updateStatus($bolsa, BolsaStatus::Cadastrado);
 
-        $this->assertEquals(1, $bolsa->status);
+        $this->assertEquals(BolsaStatus::Cadastrado, $bolsa->status);
     }
 
     public function test_solicitar_envia_email()
