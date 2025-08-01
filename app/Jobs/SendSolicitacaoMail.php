@@ -40,11 +40,12 @@ class SendSolicitacaoMail implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->bolsaService->updateStatus($this->bolsa, BolsaStatus::AguardandoEnvio);
         try {
             Mail::to($this->emailDestinatario)
                 ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa));
 
-            $this->bolsaService->updateStatus($this->bolsa, BolsaStatus::Cadastrado);
+            $this->bolsaService->updateStatus($this->bolsa, BolsaStatus::AguardandoResposta);
         } catch (\Exception $e) {
             throw $e;
         }
