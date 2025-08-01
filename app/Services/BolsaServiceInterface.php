@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BolsaStatus;
 use App\Models\Bolsa;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -23,5 +24,5 @@ interface BolsaServiceInterface
 
     public function registrar(string $token, array $data, array $files): Bolsa;
 
-    public function updateStatus(Bolsa $bolsa, int $newStatus);
+    public function updateStatus(Bolsa $bolsa, BolsaStatus $newStatus);
 }

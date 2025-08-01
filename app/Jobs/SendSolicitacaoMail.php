@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\BolsaStatus;
 use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use App\Models\User;
@@ -43,7 +44,7 @@ class SendSolicitacaoMail implements ShouldQueue
             Mail::to($this->emailDestinatario)
                 ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa));
 
-            $this->bolsaService->updateStatus($this->bolsa, 1);
+            $this->bolsaService->updateStatus($this->bolsa, BolsaStatus::Cadastrado);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -51,6 +52,6 @@ class SendSolicitacaoMail implements ShouldQueue
 
     public function failed(\Throwable $exception): void
     {
-        $this->bolsaService->updateStatus($this->bolsa, 5);
+        $this->bolsaService->updateStatus($this->bolsa, BolsaStatus::Erro);
     }
 }

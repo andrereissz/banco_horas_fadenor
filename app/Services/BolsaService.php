@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BolsaStatus;
 use App\Jobs\SendSolicitacaoMail;
 use App\Models\Bolsa;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,7 +42,7 @@ class BolsaService implements BolsaServiceInterface
         return $bolsa->delete();
     }
 
-    public function updateStatus(Bolsa $bolsa, int $newStatus): bool
+    public function updateStatus(Bolsa $bolsa, BolsaStatus $newStatus): bool
     {
         return $bolsa->update(['status' => $newStatus]);
     }
@@ -85,7 +86,7 @@ class BolsaService implements BolsaServiceInterface
     {
         $bolsa = Bolsa::where('token', $token)->firstOrFail();
         $this->update($bolsa, $data);
-        $this->updateStatus($bolsa, 1);
+        $this->updateStatus($bolsa, BolsaStatus::Respondido);
         foreach ($files as $file) {
             if ($file instanceof UploadedFile) {
                 $bolsa->documentos()->create([

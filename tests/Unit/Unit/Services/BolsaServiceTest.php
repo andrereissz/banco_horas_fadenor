@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Enums\BolsaStatus;
 use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use App\Models\User;
@@ -106,7 +107,7 @@ class BolsaServiceTest extends TestCase
     {
         $bolsa = Bolsa::factory()->create();
 
-        $this->service->updateStatus($bolsa, 1);
+        $this->service->updateStatus($bolsa, BolsaStatus::Cadastrado);
 
         $this->assertEquals(1, $bolsa->status);
     }

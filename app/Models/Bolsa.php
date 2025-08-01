@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BolsaStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Bolsa extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $casts = [
+        'status' => BolsaStatus::class,
+    ];
 
     protected $fillable = [
         // Vínculo
