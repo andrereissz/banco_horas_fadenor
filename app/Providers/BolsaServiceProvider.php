@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\BolsaService;
 use App\Services\BolsaServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +14,7 @@ class BolsaServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(BolsaServiceInterface::class, function ($app) {
-            return new \App\Services\BolsaService();
+            return new BolsaService();
         });
     }
 

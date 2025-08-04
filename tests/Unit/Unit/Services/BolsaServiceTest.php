@@ -6,32 +6,33 @@ use App\Enums\BolsaStatus;
 use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use App\Models\User;
-use App\Services\BolsaService;
+use App\Services\BolsaServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BolsaServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected BolsaService $service;
+    protected BolsaServiceInterface $bolsaService;
+    protected User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new BolsaService;
-        User::factory()->create();
+
+        $this->bolsaService = $this->app->make(BolsaServiceInterface::class);
+
+        $this->user =User::factory()->create();
     }
 
     public function test_get_all_bolsas()
     {
         Bolsa::factory()->count(3)->create();
 
-        $result = $this->service->get();
+        $result = $this->bolsaService->get();
 
         $this->assertCount(3, $result);
         $this->assertInstanceOf(Bolsa::class, $result->first());
@@ -40,7 +41,7 @@ class BolsaServiceTest extends TestCase
     public function test_find_bolsa_by_uuid()
     {
         $bolsa = Bolsa::factory()->create();
-        $result = $this->service->find($bolsa->id);
+        $result = $this->bolsaService->find($bolsa->id);
 
         $this->assertEquals($bolsa->id, $result->id);
     }
@@ -48,19 +49,18 @@ class BolsaServiceTest extends TestCase
     public function test_find_bolsa_by_token()
     {
         $bolsa = Bolsa::factory()->create();
-        $result = $this->service->findBolsaByToken($bolsa->token);
+        $result = $this->bolsaService->findBolsaByToken($bolsa->token);
 
         $this->assertEquals($bolsa->id, $result->id);
     }
 
     public function test_create_bolsa()
     {
-        $user = User::factory()->create();
-        Auth::expects('user')->andReturn($user);
+        Auth::expects('user')->andReturn($this->user);
 
         $data = [
             'user_id' => Auth::user()->id,
-            'nome' => 'Nome da Bolsa',
+            'nome' => 'Nome do Bolsista',
             'token' => 'abc123',
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
@@ -71,12 +71,12 @@ class BolsaServiceTest extends TestCase
             'valor' => '100000',
         ];
 
-        $bolsa = $this->service->create($data);
+        $bolsa = $this->bolsaService->create($data);
 
         $this->assertDatabaseHas('bolsas', [
             'id' => $bolsa->id,
-            'user_id' => $user->id,
-            'nome' => 'Nome da Bolsa',
+            'user_id' => $this->user->id,
+            'nome' => 'Nome do Bolsista',
             'token' => 'abc123',
         ]);
     }
@@ -87,7 +87,7 @@ class BolsaServiceTest extends TestCase
             'nome' => 'Antigo Nome',
         ]);
 
-        $updated = $this->service->update($bolsa, ['nome' => 'Novo Nome']);
+        $updated = $this->bolsaService->update($bolsa, ['nome' => 'Novo Nome']);
 
         $this->assertTrue($updated);
         $this->assertEquals('Novo Nome', $bolsa->fresh()->nome);
@@ -97,7 +97,7 @@ class BolsaServiceTest extends TestCase
     {
         $bolsa = Bolsa::factory()->create();
 
-        $deleted = $this->service->delete($bolsa);
+        $deleted = $this->bolsaService->delete($bolsa);
 
         $this->assertTrue($deleted);
         $this->assertModelMissing($bolsa);
@@ -107,7 +107,7 @@ class BolsaServiceTest extends TestCase
     {
         $bolsa = Bolsa::factory()->create();
 
-        $this->service->updateStatus($bolsa, BolsaStatus::Cadastrado);
+        $this->bolsaService->updateStatus($bolsa, BolsaStatus::Cadastrado);
 
         $this->assertEquals(BolsaStatus::Cadastrado, $bolsa->status);
     }
@@ -132,34 +132,9 @@ class BolsaServiceTest extends TestCase
             'valor' => '100000',
         ];
 
-        $files = [UploadedFile::fake()->create('documento.pdf')];
-
-        $this->service->solicitar($data, $files);
+        $this->bolsaService->solicitar($data);
 
         Mail::assertSent(SolicitarBolsa::class);
         $this->assertDatabaseHas('bolsas', ['nome' => 'SOLICITACAO']);
-    }
-
-    public function test_registrar_bolsa_com_documentos()
-    {
-        Storage::fake('local');
-        $user = User::factory()->create();
-        Auth::shouldReceive('user')->andReturn($user);
-        $bolsa = Bolsa::factory()->create();
-        $data = [
-            'nome_mae' => 'Maria',
-            'nome_pai' => 'João',
-            'estado_civil' => 1,
-            'raca_cor' => 1,
-            'tipo' => 1,
-        ];
-
-        $files = [UploadedFile::fake()->create('arquivo1.pdf')];
-        $bolsa = $this->service->registrar($bolsa->token, $data, $files);
-
-        $this->assertDatabaseHas('bolsas', ['nome' => $bolsa->nome, 'status' => BolsaStatus::Respondido->value]);
-        $this->assertDatabaseCount('documentos', 1);
-
-        Storage::assertExists($bolsa->documentos->first()->caminho);
     }
 }

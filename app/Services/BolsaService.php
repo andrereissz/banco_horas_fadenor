@@ -49,8 +49,6 @@ class BolsaService implements BolsaServiceInterface
 
     public function solicitar(array $data): Bolsa
     {
-        $temporaryPaths = [];
-
         if (str_contains($data['valor'], ',')) {
             $data['valor'] = str_replace(',', '.', $data['valor']);
         }
@@ -82,11 +80,8 @@ class BolsaService implements BolsaServiceInterface
         return $bolsa;
     }
 
-    public function registrar(string $token, array $data, array $files): Bolsa
+    public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void
     {
-        $bolsa = Bolsa::where('token', $token)->firstOrFail();
-        $this->update($bolsa, $data);
-        $this->updateStatus($bolsa, BolsaStatus::Respondido);
         foreach ($files as $file) {
             if ($file instanceof UploadedFile) {
                 $bolsa->documentos()->create([
@@ -96,6 +91,14 @@ class BolsaService implements BolsaServiceInterface
                 ]);
             }
         }
+    }
+
+    public function registrar(string $token, array $data, array $files): Bolsa
+    {
+        $bolsa = Bolsa::where('token', $token)->firstOrFail();
+        $this->update($bolsa, $data);
+        $this->updateStatus($bolsa, BolsaStatus::Respondido);
+
 
         return $bolsa;
     }
