@@ -23,7 +23,10 @@ class Bolsa extends Model
         // Vínculo
         'user_id',
 
-        // Dados da bolsa
+        // Dados Básicos
+        'nome',
+
+        // Dados da Bolsa
         'token',
         'status',
         'projeto_cod',
@@ -34,49 +37,14 @@ class Bolsa extends Model
         'data_fim',
         'valor',
 
-        // Dados pessoais
-        'nome',
-        'data_nasc',
-        'nome_mae',
-        'nome_pai',
-        'estado_civil',
-        'raca_cor',
-        'telefone',
-        'email',
-        'escolaridade',
-
-        // Naturalidade
-        'muni_nasc',
-        'uf_nasc',
-
-        // Endereço
-        'cep',
-        'muni_resid',
-        'uf_resid',
-        'logradouro',
-        'numero',
-        'complemento',
-        'bairro',
-
-        // Documentos
-        'cpf',
-        'pis',
-        'rg',
-        'rg_orgao',
-        'rg_orgao_uf',
-        'rg_data_emissao',
-        'titulo_eleitor',
-        'titulo_zona',
-        'titulo_secao',
-        'certificado_reservista',
 
         // Banco
         'banco_nome',
         'banco_cod',
         'agencia',
         'agencia_digito',
-        'conta_digito',
         'conta',
+        'conta_digito'
     ];
 
     public function user(): BelongsTo
@@ -87,6 +55,11 @@ class Bolsa extends Model
     public function documentos(): HasMany
     {
         return $this->hasMany(Documento::class);
+    }
+
+    public function bolsista(): BelongsTo
+    {
+        return $this->belongsTo(Bolsista::class);
     }
 
     public function scopeSearch($query, string $search)
