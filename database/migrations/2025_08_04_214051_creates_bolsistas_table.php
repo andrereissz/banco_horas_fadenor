@@ -17,15 +17,15 @@ return new class extends Migration
             $table->string('nome_mae');
             $table->string('nome_pai')->nullable();
             $table->char('sexo', 1);
-            $table->int('escolaridade');
-            $table->int('estado_civil');
+            $table->integer('escolaridade');
+            $table->integer('estado_civil');
             $table->date('data_nasc');
             $table->boolean('flag_extrangeiro')->default(false);
             $table->string('extrangeiro_pais', 2)->nullable();
             $table->string('extrangeiro_muni', 100)->nullable();
             $table->string('muni_nasc', 100)->nullable();
             $table->string('uf_nasc', 2)->nullable();
-            $table->int('raca_cor');
+            $table->integer('raca_cor');
             $table->string('telefone', 15)->nullable();
             $table->string('email')->unique();
             $table->string('cep', 9);
