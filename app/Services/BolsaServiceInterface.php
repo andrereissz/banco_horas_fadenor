@@ -22,7 +22,9 @@ interface BolsaServiceInterface
 
     public function solicitar(array $data): Bolsa;
 
-    public function registrar(string $token, array $data, array $files): Bolsa;
+    public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void;
 
     public function updateStatus(Bolsa $bolsa, BolsaStatus $newStatus);
+
+    public function formataText(string $text): string;
 }

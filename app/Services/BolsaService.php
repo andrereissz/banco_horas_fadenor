@@ -95,10 +95,9 @@ class BolsaService implements BolsaServiceInterface
 
     public function registrar(string $token, array $data, array $files): Bolsa
     {
-        $bolsa = Bolsa::where('token', $token)->firstOrFail();
-        $this->update($bolsa, $data);
+        $bolsa = Bolsa::where('token', $token)->where('status', BolsaStatus::AguardandoResposta)->firstOrFail();
         $this->updateStatus($bolsa, BolsaStatus::Respondido);
-
+        $this->uploadDocumentos($bolsa, $data, $files);
 
         return $bolsa;
     }
