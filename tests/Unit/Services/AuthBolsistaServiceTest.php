@@ -55,7 +55,7 @@ class AuthBolsistaServiceTest extends TestCase
             'titulo_zona' => $this->faker->numerify('####'),
             'titulo_secao' => $this->faker->numerify('####'),
             'certificado_reservista' => '',
-            'password' => bcrypt('password')
+            'password' => 'password'
         ]);
 
         $this->assertInstanceOf(\App\Models\Bolsista::class, $bolsista);

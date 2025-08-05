@@ -50,7 +50,10 @@ class Bolsista extends User
         'titulo_eleitor',
         'titulo_zona',
         'titulo_secao',
-        'certificado_reservista'
+        'certificado_reservista',
+
+        // Senha
+        'password'
     ];
     public function bolsas(): HasMany
     {
