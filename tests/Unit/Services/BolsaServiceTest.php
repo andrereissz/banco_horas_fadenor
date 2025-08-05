@@ -60,7 +60,6 @@ class BolsaServiceTest extends TestCase
 
         $data = [
             'user_id' => Auth::user()->id,
-            'token' => 'abc123',
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
             'projeto_num' => 'APQ-09512',
@@ -75,7 +74,6 @@ class BolsaServiceTest extends TestCase
         $this->assertDatabaseHas('bolsas', [
             'id' => $bolsa->id,
             'user_id' => $this->user->id,
-            'token' => 'abc123',
         ]);
     }
 
