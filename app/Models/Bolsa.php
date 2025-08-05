@@ -21,6 +21,7 @@ class Bolsa extends Model
 
     protected $fillable = [
         // Vínculo
+        'bolsista_id',
         'user_id',
 
         // Dados Básicos
