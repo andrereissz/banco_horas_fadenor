@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\BolsaStatus;
 use App\Models\Bolsa;
+use App\Models\Bolsista;
 use Illuminate\Database\Eloquent\Collection;
 
 interface BolsaServiceInterface
@@ -21,6 +22,8 @@ interface BolsaServiceInterface
     public function delete(Bolsa $bolsa): bool;
 
     public function solicitar(array $data): Bolsa;
+
+    public function bind(Bolsa $bolsa, Bolsista $bolsista): bool;
 
     public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void;
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\BolsaStatus;
 use App\Jobs\SendSolicitacaoMail;
 use App\Models\Bolsa;
+use App\Models\Bolsista;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,17 @@ class BolsaService implements BolsaServiceInterface
         }
 
         return $bolsa;
+    }
+
+    public function bind(Bolsa $bolsa, Bolsista $bolsista): bool
+    {
+        try{
+            $this->update($bolsa, ['bolsista_id' => $bolsista->id, 'token_expires_at' => null]);
+            $this->updateStatus($bolsa, BolsaStatus::Respondido);
+            return true;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void
