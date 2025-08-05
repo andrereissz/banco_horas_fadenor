@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'bolsistas' => [
+            'driver' => 'session',
+            'provider' => 'bolsistas',
+        ],
     ],
 
     /*
@@ -63,6 +68,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'bolsistas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Bolsista::class,
         ],
 
         // 'users' => [

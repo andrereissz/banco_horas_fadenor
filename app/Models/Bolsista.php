@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Hash;
 
-class Bolsista extends Model
+class Bolsista extends User
 {
+    use HasFactory, HasUuids;
+
     protected $fillable = [
         // Dados pessoais
         'nome',
@@ -14,6 +21,7 @@ class Bolsista extends Model
         'nome_mae',
         'nome_pai',
         'estado_civil',
+        'sexo',
         'raca_cor',
         'telefone',
         'email',
@@ -47,5 +55,12 @@ class Bolsista extends Model
     public function bolsas(): HasMany
     {
         return $this->hasMany(Bolsa::class);
+    }
+
+    public function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => Hash::make($value),
+        );
     }
 }
