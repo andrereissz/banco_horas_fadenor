@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use App\Enums\BolsaStatus;
 use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
+use App\Models\Bolsista;
 use App\Models\User;
 use App\Services\BolsaServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -131,5 +132,20 @@ class BolsaServiceTest extends TestCase
         $this->bolsaService->solicitar($data);
 
         Mail::assertSent(SolicitarBolsa::class);
+    }
+
+    public function test_binds_bolsa_to_bolsista()
+    {
+        $bolsista = Bolsista::factory()->create();
+
+        $bolsa = Bolsa::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->assertEquals($bolsa->status, BolsaStatus::AguardandoResposta);
+
+        $this->bolsaService->bind($bolsa, $bolsista);
+
+        $this->assertEquals($bolsa->status, BolsaStatus::Respondido);
     }
 }
