@@ -19,9 +19,7 @@ class BolsaFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
             'user_id' => 1,
-            'token' => Str::uuid(),
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
             'projeto_num' => 'APQ-09512',
