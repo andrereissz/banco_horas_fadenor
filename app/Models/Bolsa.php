@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Bolsa extends Model
 {
@@ -28,7 +29,6 @@ class Bolsa extends Model
         'nome',
 
         // Dados da Bolsa
-        'token',
         'status',
         'projeto_cod',
         'projeto_nome',
@@ -47,6 +47,16 @@ class Bolsa extends Model
         'conta',
         'conta_digito'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($bolsa) {
+            $plainTextToken = Str::random(40);
+            $bolsa->token = hash('sha256', $plainTextToken);
+            $bolsa->token_expires_at = now()->addDays(14);
+        });
+    }
 
     public function user(): BelongsTo
     {
