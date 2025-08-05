@@ -18,7 +18,7 @@
                                 Prezado(a) Professor(a),
                             </p>
                             <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4a5568; text-align: justify;">
-                                Referente ao projeto <strong>{{ $bolsa->projeto_nome }} - {{ $bolsa->projeto_num }}</strong>, solicitamos que comunique ao bolsista <strong>{{ $bolsa->nome }}</strong> que é imprescindível o preenchimento de seus dados cadastrais e o anexo da documentação solicitada através do link abaixo:
+                                Referente ao projeto <strong>{{ $bolsa->projeto_nome }} - {{ $bolsa->projeto_num }}</strong>, solicitamos que comunique ao bolsista <strong>{{ $bolsistaNome }}</strong> que é imprescindível o preenchimento de seus dados cadastrais e o anexo da documentação solicitada através do link abaixo:
                             </p>
                         </td>
                     </tr>

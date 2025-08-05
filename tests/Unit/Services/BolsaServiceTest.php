@@ -60,7 +60,6 @@ class BolsaServiceTest extends TestCase
 
         $data = [
             'user_id' => Auth::user()->id,
-            'nome' => 'Nome do Bolsista',
             'token' => 'abc123',
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
@@ -76,7 +75,6 @@ class BolsaServiceTest extends TestCase
         $this->assertDatabaseHas('bolsas', [
             'id' => $bolsa->id,
             'user_id' => $this->user->id,
-            'nome' => 'Nome do Bolsista',
             'token' => 'abc123',
         ]);
     }
@@ -84,13 +82,13 @@ class BolsaServiceTest extends TestCase
     public function test_update_bolsa()
     {
         $bolsa = Bolsa::factory()->create([
-            'nome' => 'Antigo Nome',
+            'projeto_nome' => 'Projeto Antigo',
         ]);
 
-        $updated = $this->bolsaService->update($bolsa, ['nome' => 'Novo Nome']);
+        $updated = $this->bolsaService->update($bolsa, ['projeto_nome' => 'Novo Nome']);
 
         $this->assertTrue($updated);
-        $this->assertEquals('Novo Nome', $bolsa->fresh()->nome);
+        $this->assertEquals('Novo Nome', $bolsa->fresh()->projeto_nome);
     }
 
     public function test_delete_bolsa()
@@ -135,6 +133,5 @@ class BolsaServiceTest extends TestCase
         $this->bolsaService->solicitar($data);
 
         Mail::assertSent(SolicitarBolsa::class);
-        $this->assertDatabaseHas('bolsas', ['nome' => 'SOLICITACAO']);
     }
 }

@@ -15,20 +15,12 @@ use Illuminate\Queue\SerializesModels;
 
 class SolicitarBolsa extends Mailable
 {
-    protected User $authenticatedUser;
-
-    protected Bolsa $bolsa;
-
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $authenticatedUser, Bolsa $bolsa)
-    {
-        $this->authenticatedUser = $authenticatedUser;
-        $this->bolsa = $bolsa;
-    }
+    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome){}
 
     /**
      * Get the message envelope.
@@ -51,6 +43,7 @@ class SolicitarBolsa extends Mailable
             view: $this->bolsa->tipo == BolsaTipo::FADENOR->value ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
             with: [
                 'bolsa' => $this->bolsa,
+                'bolsistaNome' => $this->bolsistaNome,
                 'user' => $this->authenticatedUser,
             ]
         );

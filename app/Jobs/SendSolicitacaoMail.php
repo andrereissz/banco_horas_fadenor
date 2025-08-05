@@ -20,7 +20,7 @@ class SendSolicitacaoMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $emailDestinatario)
+    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome,protected string $emailDestinatario)
     {}
 
     /**
@@ -31,7 +31,7 @@ class SendSolicitacaoMail implements ShouldQueue
         $bolsaService->updateStatus($this->bolsa, BolsaStatus::AguardandoEnvio);
         try {
             Mail::to($this->emailDestinatario)
-                ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa));
+                ->send(new SolicitarBolsa($this->authenticatedUser, $this->bolsa, $this->bolsistaNome));
 
             $bolsaService->updateStatus($this->bolsa, BolsaStatus::AguardandoResposta);
         } catch (\Exception $e) {

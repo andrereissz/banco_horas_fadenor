@@ -61,7 +61,6 @@ class BolsaService implements BolsaServiceInterface
             'projeto_nome' => $data['projetoNome'],
             'projeto_num' => $data['projetoNum'],
             'tipo' => $data['tipo'],
-            'nome' => $this->formataText($data['nome']),
             'data_inicio' => $data['dataInicio'],
             'data_fim' => $data['dataFim'],
             'valor' => (int) ((float) $data['valor'] * 100),
@@ -71,6 +70,7 @@ class BolsaService implements BolsaServiceInterface
             SendSolicitacaoMail::dispatch(
                 Auth::user(),
                 $bolsa,
+                $this->formataText($data['nome']),
                 $data['emailDestinatario']
             );
         } catch (\Exception $e) {

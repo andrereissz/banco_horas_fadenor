@@ -16,7 +16,7 @@
                     <tr>
                         <td style="padding: 0 40px 30px 40px; text-align: left;">
                             <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #4a5568;">
-                                Prezado(a) Bolsista <strong>{{ $bolsa->nome }}</strong>,
+                                Prezado(a) Bolsista <strong>{{ $bolsistaNome }}</strong>,
                             </p>
                             <p
                                 style="margin: 0; font-size: 16px; line-height: 1.6; color: #4a5568; text-align: justify;">
