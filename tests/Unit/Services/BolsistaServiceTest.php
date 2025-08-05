@@ -20,12 +20,4 @@ class BolsistaServiceTest extends TestCase
         $this->bolsistaService = $this->app->make(BolsistaServiceInterface::class);
         $this->authBolsistaService = $this->app->make(AuthBolsistaServiceInterface::class);
     }
-
-    public function test_if_a_bolsista_can_be_found()
-    {
-        $bolsista = $this->authBolsistaService->register([
-            
-        ])
-        $this->bolsistaService->find('12345678901');
-    }
 }
