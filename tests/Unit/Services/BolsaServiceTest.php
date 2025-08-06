@@ -148,4 +148,17 @@ class BolsaServiceTest extends TestCase
 
         $this->assertEquals($bolsa->status, BolsaStatus::Respondido);
     }
+
+    public function test_if_a_bolsista_can_retrieve_its_bolsas()
+    {
+        $bolsista = Bolsista::factory()->create();
+
+        $bolsa = Bolsa::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->bolsaService->bind($bolsa, $bolsista);
+
+        $this->assertEquals($bolsista->bolsas()->first()->id, $bolsa->id);
+    }
 }
