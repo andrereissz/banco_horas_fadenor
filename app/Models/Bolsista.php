@@ -27,6 +27,8 @@ class Bolsista extends User
         'escolaridade',
 
         // Naturalidade
+        'est_pais',
+        'est_muni',
         'muni_nasc',
         'uf_nasc',
 
@@ -54,6 +56,12 @@ class Bolsista extends User
         // Senha
         'password'
     ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function bolsas(): HasMany
     {
         return $this->hasMany(Bolsa::class);
