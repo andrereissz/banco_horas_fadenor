@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Bolsistas\Services;
+namespace App\Services\Bolsistas;
 
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;

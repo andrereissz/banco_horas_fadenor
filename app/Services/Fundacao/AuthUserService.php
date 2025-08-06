@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\fundacao\Services;
+namespace App\Services\Fundacao;
 
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;

@@ -2,8 +2,8 @@
 
 namespace App\Providers\Services\Auth;
 
-use App\Services\Bolsistas\Services\AuthBolsistaService;
-use App\Services\fundacao\Services\AuthUserService;
+use App\Services\Bolsistas\AuthBolsistaService;
+use App\Services\Fundacao\AuthUserService;
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
