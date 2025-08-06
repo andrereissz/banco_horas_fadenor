@@ -55,7 +55,7 @@ class AuthBolsistaService implements AuthBolsistaServiceInterface
 
     public function logout(Request $request): void
     {
-        Auth::guard('web_bolsistas')->logout();
+        Auth::guard('bolsistas')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }
