@@ -23,6 +23,6 @@ class AuthUserService implements AuthUserServiceInterface
 
     public function sendResetLink(array $credentials): string
     {
-        return Password::broker('bolsistas')->sendResetLink($credentials);
+        return Password::broker('users')->sendResetLink($credentials);
     }
 }
