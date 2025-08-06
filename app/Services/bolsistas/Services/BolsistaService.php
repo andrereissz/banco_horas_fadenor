@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\bolsistas\Services;
 
 use App\Models\Bolsista;
-use App\Services\BolsistaServiceInterface;
+use App\Services\bolsistas\Interfaces\BolsistaServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class BolsistaService implements BolsistaServiceInterface

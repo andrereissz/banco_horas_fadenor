@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\bolsas\Services;
 
 use App\Enums\BolsaStatus;
 use App\Jobs\SendSolicitacaoMail;
 use App\Models\Bolsa;
 use App\Models\Bolsista;
+use App\Services\bolsas\Interfaces\BolsaServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
