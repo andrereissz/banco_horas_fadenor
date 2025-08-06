@@ -92,6 +92,15 @@ class BolsaService implements BolsaServiceInterface
         }
     }
 
+    public function checkToken(Bolsa $bolsa): bool
+    {
+        if($bolsa->token_expires_at < now() || $bolsa->status != BolsaStatus::AguardandoEnvio || $bolsa->status != BolsaStatus::AguardandoResposta){
+            return false;
+        }
+
+        return true;
+    }
+
     public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void
     {
         foreach ($files as $file) {

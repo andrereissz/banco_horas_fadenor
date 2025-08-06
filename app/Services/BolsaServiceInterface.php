@@ -25,6 +25,8 @@ interface BolsaServiceInterface
 
     public function bind(Bolsa $bolsa, Bolsista $bolsista): bool;
 
+    public function checkToken(Bolsa $bolsa): bool;
+
     public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void;
 
     public function updateStatus(Bolsa $bolsa, BolsaStatus $newStatus);
