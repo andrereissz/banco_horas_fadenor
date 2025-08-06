@@ -4,7 +4,9 @@ namespace App\Services\bolsistas\Services;
 
 use App\Models\Bolsista;
 use App\Services\bolsistas\Interfaces\AuthBolsistaServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 class AuthBolsistaService implements AuthBolsistaServiceInterface
 {
@@ -51,8 +53,15 @@ class AuthBolsistaService implements AuthBolsistaServiceInterface
         return Auth::guard('bolsistas')->attempt($credentials, $remember);
     }
 
-    public function logout(): void
+    public function logout(Request $request): void
     {
-        Auth::guard('bolsistas')->logout();
+        Auth::guard('web_bolsistas')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+    }
+
+    public function sendResetLink(array $credentials): string
+    {
+        return Password::broker('bolsistas')->sendResetLink($credentials);
     }
 }
