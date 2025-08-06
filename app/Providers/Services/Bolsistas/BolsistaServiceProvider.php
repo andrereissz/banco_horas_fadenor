@@ -2,8 +2,8 @@
 
 namespace App\Providers\Services\Bolsista;
 
-use App\Services\BolsistaService;
-use App\Services\BolsistaServiceInterface;
+use App\Services\Bolsistas\Services\BolsistaService;
+use App\Services\Interfaces\Bolsistas\BolsistaServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class BolsistaServiceProvider extends ServiceProvider

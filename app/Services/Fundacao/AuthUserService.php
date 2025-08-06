@@ -2,12 +2,12 @@
 
 namespace App\Services\fundacao\Services;
 
-use App\Services\fundacao\Interfaces\AuthUserServiceInterface;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
-class AuthUserService implements AuthUserServiceInterface
+class AuthUserService implements AuthServiceInterface
 {
     public function login(array $credentials, bool $remember): bool
     {

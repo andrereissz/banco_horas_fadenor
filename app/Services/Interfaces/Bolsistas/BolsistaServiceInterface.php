@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\bolsistas\Interfaces;
+namespace App\Services\Interfaces\Bolsistas;
 
 use App\Models\Bolsista;
 use Illuminate\Database\Eloquent\Collection;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\bolsas\Services;
+namespace App\Services\Bolsas\Services;
 
 use App\Enums\BolsaStatus;
 use App\Jobs\SendSolicitacaoMail;

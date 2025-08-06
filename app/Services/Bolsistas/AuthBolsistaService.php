@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\bolsistas\Services;
+namespace App\Services\Bolsistas\Services;
 
-use App\Models\Bolsista;
-use App\Services\bolsistas\Interfaces\AuthBolsistaServiceInterface;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
-class AuthBolsistaService implements AuthBolsistaServiceInterface
+class AuthBolsistaService implements AuthServiceInterface
 {
+    /*
     public function register(array $data): Bolsista
     {
         return Bolsista::create([
@@ -47,6 +47,7 @@ class AuthBolsistaService implements AuthBolsistaServiceInterface
             'certificado_reservista' => $data['certificado_reservista']
         ]);
     }
+*/
 
     public function login(array $credentials, bool $remember): bool
     {

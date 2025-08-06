@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\bolsas\Interfaces;
+namespace App\Services\Bolsas\Interfaces;
 
 use App\Enums\BolsaStatus;
 use App\Models\Bolsa;

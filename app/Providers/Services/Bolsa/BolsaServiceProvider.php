@@ -2,8 +2,8 @@
 
 namespace App\Providers\Services\Bolsa;
 
-use App\Services\BolsaService;
-use App\Services\BolsaServiceInterface;
+use App\Services\bolsas\Interfaces\BolsaServiceInterface;
+use App\Services\bolsas\Services\BolsaService;
 use Illuminate\Support\ServiceProvider;
 
 class BolsaServiceProvider extends ServiceProvider
