@@ -77,7 +77,7 @@ class SolicitarBolsaForm extends Component
 
             flash()->success('Bolsa solicitada com sucesso!');
 
-            $this->redirect(route('solicitar-bolsa'));
+            $this->redirect(route('fundacao.solicitar-bolsa'));
 
         } catch (\Exception $e) {
             flash()->error($e->getMessage());
