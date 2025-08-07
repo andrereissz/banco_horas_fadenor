@@ -3,8 +3,7 @@
 namespace App\Livewire\Bolsa;
 
 use App\Enums\BolsaTipo;
-use App\Models\Bolsa;
-use App\Services\BolsaService;
+use App\Services\Bolsas\BolsaService;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
