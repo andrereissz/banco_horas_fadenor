@@ -11,10 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->replace(
-            \Illuminate\Auth\Middleware\Authenticate::class,
-            \App\Http\Middleware\Authenticate::class
-        );
+        $middleware->redirectGuestsTo('/');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
