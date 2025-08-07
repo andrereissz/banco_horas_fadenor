@@ -7,7 +7,7 @@ use App\Mail\SolicitarBolsa;
 use App\Models\Bolsa;
 use App\Models\Bolsista;
 use App\Models\User;
-use App\Services\BolsaServiceInterface;
+use App\Services\Interfaces\Bolsas\BolsaServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
