@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers\Services\Bolsista;
+namespace App\Providers\Services\Bolsistas;
 
-use App\Services\Bolsistas\Services\BolsistaService;
+use App\Services\Bolsistas\BolsistaService;
 use App\Services\Interfaces\Bolsistas\BolsistaServiceInterface;
 use Illuminate\Support\ServiceProvider;
 

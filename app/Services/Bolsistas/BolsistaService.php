@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Bolsistas\Services;
+namespace App\Services\Bolsistas;
 
 use App\Models\Bolsista;
 use App\Services\Interfaces\Bolsistas\BolsistaServiceInterface;
