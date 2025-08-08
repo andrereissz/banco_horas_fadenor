@@ -25,4 +25,13 @@ class AuthUserService implements AuthServiceInterface
     {
         return Password::broker('users')->sendResetLink($credentials);
     }
+
+    public function resetPassword(array $data): string
+    {
+        return Password::broker('users')->reset($data, function ($user, $password) {
+            $user->forceFill([
+                'password' => $password,
+            ])->save();
+        });
+    }
 }
