@@ -21,9 +21,9 @@ class AuthUserService implements AuthServiceInterface
         $request->session()->regenerateToken();
     }
 
-    public function sendResetLink(array $credentials): string
+    public function sendResetLink(string $email): string
     {
-        return Password::broker('users')->sendResetLink($credentials);
+        return Password::broker('users')->sendResetLink(['email' => $email]);
     }
 
     public function resetPassword(array $data): string
