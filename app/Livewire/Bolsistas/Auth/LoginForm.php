@@ -37,24 +37,51 @@ class LoginForm extends Component
 
     public function authenticate(AuthServiceInterface $authService)
     {
-        $key = 'login:' . request()->ip();
+        $key = $this->getRateLimiterKey();
 
-        if (! RateLimiter::remaining($key, 5)) {
-            throw ValidationException::withMessages([
-                'username' => 'Muitas tentativas. Aguarde um momento e tente novamente.',
-            ]);
+        if ($this->isRateLimited($key)) {
+            $this->resetErrorBag();
+            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
+            $this->addError('cpf', 'Muitas tentativas. Aguarde um momento e tente novamente.');
+            return;
         }
 
         $credentials = $this->validate();
 
         if ($authService->login($credentials, $this->remember)) {
-            RateLimiter::clear($key);
-            return $this->redirect(route('fundacao.dashboard'));
+            return redirect(route('bolsistas.dashboard'));
         }
 
-        RateLimiter::hit($key);
-        $this->addError('cpf', 'CPF ou senha incorretos.');
+        if (!$this->isRateLimited($key)) {
+            return $this->sendError('CPF ou senha incorretos.', $key);
+        }
+
     }
+
+    /*** Helpers compartilhados ***/
+    private function isRateLimited(string $key): bool
+    {
+        // 5 tentativas por IP
+        return ! RateLimiter::remaining($key, 5);
+    }
+
+    private function getRateLimiterKey(): string
+    {
+        return 'login:' . request()->ip();
+    }
+
+    private function sendError(string $message, ?string $key = null)
+    {
+        if ($key) {
+            RateLimiter::hit($key);
+        }
+
+        flash()->error($message);
+        $this->addError('cpf', $message);
+
+        return null;
+    }
+
     public function render()
     {
         return view('livewire.bolsistas.auth.login-form');
