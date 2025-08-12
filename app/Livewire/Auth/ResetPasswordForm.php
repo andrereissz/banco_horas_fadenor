@@ -11,15 +11,35 @@ class ResetPasswordForm extends Component
 {
     public $token;
     public $email;
-    public $password;
-    public $password_confirmation;
+    public string $password = '';
+    public string $password_confirmation = '';
     public $status;
+
+    public string $type = 'password';
 
     protected $rules = [
         'token' => 'required',
         'email' => 'required|email',
         'password' => 'required|min:8|confirmed',
     ];
+
+
+    protected function validationAttributes(): array
+    {
+        return [
+            'email' => 'E-mail',
+            'password' => 'Senha',
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'required' => 'O campo :attribute é obrigatório.',
+            'confirmed' => 'As senhas informadas não conferem.',
+            'min' => 'A senha deve ter pelo menos 8 caracteres.',
+        ];
+    }
 
     public function mount($token)
     {
@@ -31,14 +51,13 @@ class ResetPasswordForm extends Component
     {
         $key = $this->getRateLimiterKey();
 
+        $credentials = $this->validate();
+
         if ($this->isRateLimited($key)) {
             $this->resetErrorBag();
             flash()->error('Muitas tentativas. Aguarde um momento e tente novamente.');
             return;
         }
-
-
-        $credentials = $this->validate();
 
         $status = $service->resetPassword($credentials);
 
@@ -77,6 +96,11 @@ class ResetPasswordForm extends Component
         $this->addError('password', $message);
 
         return null;
+    }
+
+    public function togglePasswordVisibility(): void
+    {
+        $this->type = $this->type === 'password' ? 'text' : 'password';
     }
 
     public function render()

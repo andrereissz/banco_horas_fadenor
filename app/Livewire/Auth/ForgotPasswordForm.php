@@ -15,6 +15,21 @@ class ForgotPasswordForm extends Component
         'email' => 'required|email',
     ];
 
+
+    protected function validationAttributes(): array
+    {
+        return [
+            'email' => 'E-mail',
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'required' => 'O campo :attribute é obrigatório.',
+        ];
+    }
+
     public function sendResetLink(AuthServiceInterface $service)
     {
         $key = $this->getRateLimiterKey();

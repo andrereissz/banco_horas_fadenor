@@ -1,45 +1,45 @@
-<div class="max-w-md mx-auto p-6 bg-base-100 rounded-box shadow">
-    @if ($status)
-        <div class="alert alert-success mb-4">
-            {{ $status }}
-        </div>
-    @endif
-
-    <h2 class="text-2xl font-bold mb-4">Redefinir Senha</h2>
-
-    <form wire:submit.prevent="resetPassword" class="space-y-4">
-        <input type="hidden" wire:model="token" />
-
+<div>
+    <div href="/" class="flex flex-col gap-2 justify-center items-center">
+        <a href="/" class="flex flex-col gap-2 justify-center items-center">
+            <img src="{{ asset('storage/images/logo-oficial-fadenor.png') }}" alt="Logo Fadenor" class="h-24">
+        </a>
+        <h3 class="2xl font-bold">REDEFINIÇÃO DE SENHA</h3>
+        <div class="divider divider-vertical"></div>
+    </div>
+    <form wire:submit.prevent="resetPassword">
         <div>
-            <label for="email" class="label">
-                <span class="label-text">E-mail</span>
-            </label>
-            <input id="email" type="email" wire:model="email" placeholder="seu@email.com"
-                   class="input input-bordered w-full" />
-            @error('email')
-                <span class="text-error text-sm">{{ $message }}</span>
-            @enderror
+            <x-input-label for="password" :value="'Nova Senha'" />
+            <div class="w-full">
+                <label class="input input-bordered flex items-center gap-2 w-full">
+                    <input id="password" name="password" type="{{ $type }}" class="grow"
+                        wire:model.live="password" autocomplete="new-password" />
+                    <div class="btn btn-ghost btn-square btn-sm" wire:click="togglePasswordVisibility">
+                        @switch($type)
+                            @case('password')
+                                <x-icons.eye-slash-icon />
+                            @break
+
+                            @default
+                                <x-icons.eye-icon />
+                        @endswitch
+                    </div>
+                </label>
+            </div>
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div>
-            <label for="password" class="label">
-                <span class="label-text">Nova senha</span>
-            </label>
-            <input id="password" type="password" wire:model="password" placeholder="********"
-                   class="input input-bordered w-full" />
-            @error('password')
-                <span class="text-error text-sm">{{ $message }}</span>
-            @enderror
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="'Confirmar Senha'" />
+            <x-text-input type="password" id="password_confirmation" name="password_confirmation"
+                wire:model.live="password_confirmation" class="block mt-1 w-full" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div>
-            <label for="password_confirmation" class="label">
-                <span class="label-text">Confirme a nova senha</span>
-            </label>
-            <input id="password_confirmation" type="password" wire:model="password_confirmation" placeholder="********"
-                   class="input input-bordered w-full" />
+        <div class="flex items-center justify-end mt-4">
+            <button type="submit" class="btn btn-accent">
+                Alterar Senha
+            </button>
         </div>
-
-        <button type="submit" class="btn btn-primary w-full">Redefinir senha</button>
     </form>
 </div>

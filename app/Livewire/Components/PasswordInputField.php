@@ -3,18 +3,22 @@
 namespace App\Livewire\Components;
 
 use Livewire\Component;
+use Livewire\Attributes\Modelable;
 
 class PasswordInputField extends Component
 {
-    public $type = 'password';
+    #[Modelable]
+    public string $value = '';
+
+    public string $type = 'password';
+
+    public function togglePasswordVisibility(): void
+    {
+        $this->type = $this->type === 'password' ? 'text' : 'password';
+    }
 
     public function render()
     {
         return view('livewire.components.password-input-field');
-    }
-
-    public function togglePasswordVisibility()
-    {
-        $this->type = $this->type === 'password' ? 'text' : 'password';
     }
 }
