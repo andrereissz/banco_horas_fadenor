@@ -20,7 +20,7 @@ class SendSolicitacaoMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome,protected string $emailDestinatario)
+    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome, protected string $emailDestinatario)
     {
         $this->bolsaService = app(BolsaServiceInterface::class);
     }

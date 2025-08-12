@@ -13,6 +13,7 @@ class BolsistaServiceTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected BolsistaServiceInterface $bolsistaService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,7 +47,7 @@ class BolsistaServiceTest extends TestCase
         $data = [
             'nome' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'telefone' => $this->faker->phoneNumber()
+            'telefone' => $this->faker->phoneNumber(),
         ];
 
         $updated = $this->bolsistaService->update($bolsista, $data);

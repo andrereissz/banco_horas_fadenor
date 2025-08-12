@@ -13,7 +13,7 @@ class BolsistaAuthenticationTest extends TestCase
 
     protected AuthServiceInterface $authService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->get('/bolsistas/login');
@@ -33,13 +33,11 @@ class BolsistaAuthenticationTest extends TestCase
 
         $this->authService->login([
             'cpf' => $bolsista->cpf,
-            'password' => 'wrong-password'
+            'password' => 'wrong-password',
         ], false);
 
         $this->assertGuest();
     }
-
-
 
     public function test_bolsistas_can_login(): void
     {
@@ -47,7 +45,7 @@ class BolsistaAuthenticationTest extends TestCase
 
         $this->authService->login([
             'cpf' => $bolsista->cpf,
-            'password' => 'password'
+            'password' => 'password',
         ], false);
 
         $this->assertAuthenticated('bolsistas');
@@ -60,7 +58,7 @@ class BolsistaAuthenticationTest extends TestCase
 
         $this->authService->login([
             'cpf' => $bolsista->cpf,
-            'password' => 'password'
+            'password' => 'password',
         ], false);
 
         $this->actingAs($bolsista)->post('/bolsistas/logout');

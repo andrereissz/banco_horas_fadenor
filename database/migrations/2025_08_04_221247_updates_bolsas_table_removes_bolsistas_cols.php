@@ -52,7 +52,7 @@ return new class extends Migration
                 'agencia',
                 'agencia_digito',
                 'conta',
-                'conta_digito'
+                'conta_digito',
             ]);
         });
     }

@@ -20,7 +20,7 @@ class SolicitarBolsa extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome){}
+    public function __construct(protected User $authenticatedUser, protected Bolsa $bolsa, protected string $bolsistaNome) {}
 
     /**
      * Get the message envelope.

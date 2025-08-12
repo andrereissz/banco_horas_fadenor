@@ -16,12 +16,12 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->bind(AuthServiceInterface::class, function ($app) {
             $request = $app->make(Request::class);
             $refererUrl = $request->headers->get('referer');
-            if($request->routeIs('bolsistas.login') || $request->routeIs('bolsistas.logout') || ($refererUrl && Str::contains($refererUrl, '/bolsistas'))) {
-                return new AuthBolsistaService();
+            if ($request->routeIs('bolsistas.login') || $request->routeIs('bolsistas.logout') || ($refererUrl && Str::contains($refererUrl, '/bolsistas'))) {
+                return new AuthBolsistaService;
             }
 
-            if($request->routeIs('fundacao.login') || $request->routeIs('fundacao.logout') || ($refererUrl && Str::contains($refererUrl, '/fundacao'))) {
-                return new AuthUserService();
+            if ($request->routeIs('fundacao.login') || $request->routeIs('fundacao.logout') || ($refererUrl && Str::contains($refererUrl, '/fundacao'))) {
+                return new AuthUserService;
             }
         });
     }

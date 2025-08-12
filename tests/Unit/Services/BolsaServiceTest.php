@@ -18,6 +18,7 @@ class BolsaServiceTest extends TestCase
     use RefreshDatabase;
 
     protected BolsaServiceInterface $bolsaService;
+
     protected User $user;
 
     protected function setUp(): void
@@ -26,7 +27,7 @@ class BolsaServiceTest extends TestCase
 
         $this->bolsaService = $this->app->make(BolsaServiceInterface::class);
 
-        $this->user =User::factory()->create();
+        $this->user = User::factory()->create();
     }
 
     public function test_get_all_bolsas()

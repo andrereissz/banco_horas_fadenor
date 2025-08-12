@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Components;
 
-use Livewire\Component;
 use Livewire\Attributes\Modelable;
+use Livewire\Component;
 
 class PasswordInputField extends Component
 {

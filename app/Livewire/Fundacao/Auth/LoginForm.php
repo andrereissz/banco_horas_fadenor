@@ -9,7 +9,9 @@ use Livewire\Component;
 class LoginForm extends Component
 {
     public string $username = '';
+
     public string $password = '';
+
     public bool $remember = false;
 
     protected function rules(): array
@@ -43,6 +45,7 @@ class LoginForm extends Component
             $this->resetErrorBag();
             flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
             $this->addError('username', 'Muitas tentativas. Aguarde um momento e tente novamente.');
+
             return;
         }
 
@@ -52,7 +55,7 @@ class LoginForm extends Component
             return redirect()->route('fundacao.dashboard');
         }
 
-        if (!$this->isRateLimited($key)) {
+        if (! $this->isRateLimited($key)) {
             return $this->sendError('Usuário ou senha incorretos.', $key);
         }
 
@@ -67,7 +70,7 @@ class LoginForm extends Component
 
     private function getRateLimiterKey(): string
     {
-        return 'login:' . request()->ip();
+        return 'login:'.request()->ip();
     }
 
     private function sendError(string $message, ?string $key = null)

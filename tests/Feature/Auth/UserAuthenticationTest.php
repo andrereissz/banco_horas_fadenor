@@ -13,7 +13,7 @@ class UserAuthenticationTest extends TestCase
 
     protected AuthServiceInterface $authService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->get('/fundacao/login');
@@ -33,20 +33,18 @@ class UserAuthenticationTest extends TestCase
 
         $this->authService->login([
             'username' => $user->username,
-            'password' => 'wrong-password'
+            'password' => 'wrong-password',
         ], false);
 
         $this->assertGuest();
     }
-
-
 
     public function test_users_can_login(): void
     {
         $user = User::factory()->create();
         $result = $this->authService->login([
             'username' => $user->username,
-            'password' => 'password'
+            'password' => 'password',
         ], false);
 
         $this->assertAuthenticated();

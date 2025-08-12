@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Fundacao;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
@@ -22,6 +21,7 @@ class ProfileController extends Controller
         // Adicione aqui a lógica de validação e atualização do perfil
         $user->fill($request->validated());
         $user->save();
+
         return Redirect::route('fundacao.profile.edit')->with('status', 'profile-updated');
     }
 

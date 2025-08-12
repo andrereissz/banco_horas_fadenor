@@ -52,7 +52,7 @@ class BolsistaService implements BolsistaServiceInterface
             'titulo_eleitor' => $data['titulo_eleitor'],
             'titulo_zona' => $data['titulo_zona'],
             'titulo_secao' => $data['titulo_secao'],
-            'certificado_reservista' => $data['certificado_reservista']
+            'certificado_reservista' => $data['certificado_reservista'],
         ]);
     }
 

@@ -1,15 +1,19 @@
 <?php
 
+use App\Http\Controllers\LogoutController;
 use App\Http\Middleware\ValidToken;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LogoutController;
 
 Route::middleware('guest:bolsistas')->group(function () {
     Route::get('/login', function () {
         return view('bolsistas.auth.login');
     })->name('login');
-    Route::get('/forgot-password', function () { return view('auth.forgot-password'); })->name('password.request');
-    Route::get('/reset-password/{token}', function ($token) { return view('auth.reset-password', ['token' => $token]); })->name('password.reset');
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot-password');
+    })->name('password.request');
+    Route::get('/reset-password/{token}', function ($token) {
+        return view('auth.reset-password', ['token' => $token]);
+    })->name('password.reset');
 });
 
 Route::middleware(ValidToken::class)->group(function () {

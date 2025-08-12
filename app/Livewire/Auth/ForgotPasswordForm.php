@@ -1,20 +1,21 @@
 <?php
+
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
 use App\Services\Interfaces\AuthServiceInterface;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
+use Livewire\Component;
 
 class ForgotPasswordForm extends Component
 {
     public $email;
+
     public $status;
 
     protected $rules = [
         'email' => 'required|email',
     ];
-
 
     protected function validationAttributes(): array
     {
@@ -38,6 +39,7 @@ class ForgotPasswordForm extends Component
             $this->resetErrorBag();
             flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
             $this->addError('email', 'Muitas tentativas. Aguarde um momento e tente novamente.');
+
             return;
         }
 
@@ -48,42 +50,44 @@ class ForgotPasswordForm extends Component
         $this->status = __($status);
 
         if ($status === Password::RESET_LINK_SENT) {
-            $this->sendSuccess("Solicitação de redefinição de senha enviada com sucesso!", $key);
+            $this->sendSuccess('Solicitação de redefinição de senha enviada com sucesso!', $key);
+
             return redirect()->route('login');
         }
 
-        if (!$this->isRateLimited($key)) {
-            return $this->sendError("Ocorreu um erro ao enviar a solicitação de redefinição de senha.", $key);
+        if (! $this->isRateLimited($key)) {
+            return $this->sendError('Ocorreu um erro ao enviar a solicitação de redefinição de senha.', $key);
         }
     }
 
     private function isRateLimited(string $key): bool
     {
-        return !RateLimiter::remaining($key, 5);
+        return ! RateLimiter::remaining($key, 5);
     }
 
     private function getRateLimiterKey(): string
     {
-        return 'reset:' . request()->ip();
+        return 'reset:'.request()->ip();
     }
 
-    private function sendError(string $message, string $key = null)
+    private function sendError(string $message, ?string $key = null)
     {
         if ($key) {
             RateLimiter::hit($key);
         }
 
-        flash()->error("Ocorreu um erro ao enviar a solicitação de redefinição de senha.");
+        flash()->error('Ocorreu um erro ao enviar a solicitação de redefinição de senha.');
         $this->addError('email', $message);
     }
 
-    private function sendSuccess(string $message, string $key = null)
+    private function sendSuccess(string $message, ?string $key = null)
     {
         if ($key) {
             RateLimiter::clear($key);
         }
 
         flash()->success($message);
+
         return redirect()->route('login');
     }
 

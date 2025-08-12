@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ValidToken
 {
-    public function __construct(protected BolsaServiceInterface $bolsaService)
-    {
-    }
+    public function __construct(protected BolsaServiceInterface $bolsaService) {}
 
     /**
      * Handle an incoming request.
@@ -20,7 +18,7 @@ class ValidToken
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->session('token') == null || $this->bolsaService->checkToken($this->bolsaService->findBolsaByToken($request->session('token')->value)) == false){
+        if ($request->session('token') == null || $this->bolsaService->checkToken($this->bolsaService->findBolsaByToken($request->session('token')->value)) == false) {
             return redirect()->route('bolsistas.login');
         }
 

@@ -84,9 +84,10 @@ class BolsaService implements BolsaServiceInterface
 
     public function bind(Bolsa $bolsa, Bolsista $bolsista): bool
     {
-        try{
+        try {
             $this->update($bolsa, ['bolsista_id' => $bolsista->id, 'token_expires_at' => null]);
             $this->updateStatus($bolsa, BolsaStatus::Respondido);
+
             return true;
         } catch (\Exception $e) {
             throw $e;
@@ -95,7 +96,7 @@ class BolsaService implements BolsaServiceInterface
 
     public function checkToken(Bolsa $bolsa): bool
     {
-        if($bolsa->token_expires_at < now() || $bolsa->status != BolsaStatus::AguardandoEnvio || $bolsa->status != BolsaStatus::AguardandoResposta){
+        if ($bolsa->token_expires_at < now() || $bolsa->status != BolsaStatus::AguardandoEnvio || $bolsa->status != BolsaStatus::AguardandoResposta) {
             return false;
         }
 

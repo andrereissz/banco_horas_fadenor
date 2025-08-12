@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordBolsistaNotification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
-use App\Notifications\ResetPasswordBolsistaNotification;
 
 class Bolsista extends User
 {
@@ -55,7 +55,7 @@ class Bolsista extends User
         'certificado_reservista',
 
         // Senha
-        'password'
+        'password',
     ];
 
     protected $hidden = [
@@ -71,7 +71,7 @@ class Bolsista extends User
     public function password(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => Hash::make($value),
+            set: fn ($value) => Hash::make($value),
         );
     }
 

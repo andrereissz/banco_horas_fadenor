@@ -2,17 +2,21 @@
 
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
+use Livewire\Component;
 
 class ResetPasswordForm extends Component
 {
     public $token;
+
     public $email;
+
     public string $password = '';
+
     public string $password_confirmation = '';
+
     public $status;
 
     public string $type = 'password';
@@ -22,7 +26,6 @@ class ResetPasswordForm extends Component
         'email' => 'required|email',
         'password' => 'required|min:8|confirmed',
     ];
-
 
     protected function validationAttributes(): array
     {
@@ -56,6 +59,7 @@ class ResetPasswordForm extends Component
         if ($this->isRateLimited($key)) {
             $this->resetErrorBag();
             flash()->error('Muitas tentativas. Aguarde um momento e tente novamente.');
+
             return;
         }
 
@@ -63,16 +67,15 @@ class ResetPasswordForm extends Component
 
         if ($status === Password::PASSWORD_RESET) {
             RateLimiter::clear($key);
-            flash()->success("Senha alterada com sucesso!");
+            flash()->success('Senha alterada com sucesso!');
+
             return redirect()->route('login');
         }
 
-        if (!$this->isRateLimited($key)) {
+        if (! $this->isRateLimited($key)) {
             return $this->sendError('As senhas informadas não conferem.', $key);
         }
     }
-
-
 
     /*** Helpers compartilhados ***/
     private function isRateLimited(string $key): bool
@@ -83,7 +86,7 @@ class ResetPasswordForm extends Component
 
     private function getRateLimiterKey(): string
     {
-        return 'reset:' . request()->ip();
+        return 'reset:'.request()->ip();
     }
 
     private function sendError(string $message, ?string $key = null)

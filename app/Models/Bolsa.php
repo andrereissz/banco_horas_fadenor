@@ -17,7 +17,7 @@ class Bolsa extends Model
 
     protected $casts = [
         'status' => BolsaStatus::class,
-        'tipo' => BolsaTipo::class
+        'tipo' => BolsaTipo::class,
     ];
 
     protected $fillable = [
@@ -38,14 +38,13 @@ class Bolsa extends Model
         'data_fim',
         'valor',
 
-
         // Banco
         'banco_nome',
         'banco_cod',
         'agencia',
         'agencia_digito',
         'conta',
-        'conta_digito'
+        'conta_digito',
     ];
 
     protected static function boot()

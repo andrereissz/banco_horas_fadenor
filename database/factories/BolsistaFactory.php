@@ -46,7 +46,7 @@ class BolsistaFactory extends Factory
             'titulo_zona' => $this->faker->numerify('####'),
             'titulo_secao' => $this->faker->numerify('####'),
             'certificado_reservista' => '',
-            'password' => 'password'
+            'password' => 'password',
         ];
     }
 }
