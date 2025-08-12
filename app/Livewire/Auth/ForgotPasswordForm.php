@@ -33,7 +33,7 @@ class ForgotPasswordForm extends Component
         $this->status = __($status);
 
         if ($status === Password::RESET_LINK_SENT) {
-            $this->sendSuccess("Solicitação de redefinição de senha enviada com sucesso!", "Sucesso!");
+            $this->sendSuccess("Solicitação de redefinição de senha enviada com sucesso!", $key);
             return redirect()->route('login');
         }
 
@@ -58,7 +58,7 @@ class ForgotPasswordForm extends Component
             RateLimiter::hit($key);
         }
 
-        flash()->error($message);
+        flash()->error("Ocorreu um erro ao enviar a solicitação de redefinição de senha.");
         $this->addError('email', $message);
     }
 
@@ -68,8 +68,8 @@ class ForgotPasswordForm extends Component
             RateLimiter::clear($key);
         }
 
-        flash()->success($message, 'Sucesso!');
-        return redirect()->route('login')->with('status', $message);
+        flash()->success($message);
+        return redirect()->route('login');
     }
 
     public function render()

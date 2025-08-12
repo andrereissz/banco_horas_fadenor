@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ResetPasswordForm extends Component
 {
@@ -19,30 +21,62 @@ class ResetPasswordForm extends Component
         'password' => 'required|min:8|confirmed',
     ];
 
-    public function mount($token, $email)
+    public function mount($token)
     {
         $this->token = $token;
-        $this->email = $email;
+        $this->email = request()->query('email');
     }
 
     public function resetPassword(AuthServiceInterface $service)
     {
-        $this->validate();
+        $key = $this->getRateLimiterKey();
 
-        $status = $service->resetPassword([
-            'token' => $this->token,
-            'email' => $this->email,
-            'password' => $this->password,
-            'password_confirmation' => $this->password_confirmation,
-        ]);
+        if ($this->isRateLimited($key)) {
+            $this->resetErrorBag();
+            flash()->error('Muitas tentativas. Aguarde um momento e tente novamente.');
+            return;
+        }
 
-        $this->status = __($status);
+
+        $credentials = $this->validate();
+
+        $status = $service->resetPassword($credentials);
 
         if ($status === Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', __($status));
-        } else {
-            $this->addError('email', __($status));
+            RateLimiter::clear($key);
+            flash()->success("Senha alterada com sucesso!");
+            return $this->redirect(route('login'), navigate: true);
         }
+
+        if (!$this->isRateLimited($key)) {
+            return $this->sendError('As senhas informadas não conferem.', $key);
+        }
+    }
+
+
+
+    /*** Helpers compartilhados ***/
+    private function isRateLimited(string $key): bool
+    {
+        // 5 tentativas por IP
+        return ! RateLimiter::remaining($key, 5);
+    }
+
+    private function getRateLimiterKey(): string
+    {
+        return 'reset:' . request()->ip();
+    }
+
+    private function sendError(string $message, ?string $key = null)
+    {
+        if ($key) {
+            RateLimiter::hit($key);
+        }
+
+        flash()->error($message);
+        $this->addError('password', $message);
+
+        return null;
     }
 
     public function render()

@@ -16,8 +16,6 @@ class ResetPasswordUserNotification extends ResetPassword
 
         return (new MailMessage)
             ->subject('Redefinir Senha - Fundação')
-            ->line('Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para sua conta.')
-            ->action('Redefinir Senha', $url)
-            ->line('Se você não solicitou isso, nenhuma ação é necessária.');
+            ->view('mail.password-reset-user-mail', ['url' => $url]);
     }
 }
