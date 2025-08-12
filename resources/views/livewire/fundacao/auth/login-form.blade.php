@@ -1,5 +1,5 @@
 <div>
-    <div href="/" class="flex flex-col gap-2 justify-center items-center">
+    <div class="flex flex-col gap-2 justify-center items-center">
         <a href="/" class="flex flex-col gap-2 justify-center items-center">
             <img src="{{ asset('storage/images/logo-oficial-fadenor.png') }}" alt="Logo Fadenor" class="h-24">
         </a>

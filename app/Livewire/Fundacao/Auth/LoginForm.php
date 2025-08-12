@@ -49,7 +49,7 @@ class LoginForm extends Component
         $credentials = $this->validate();
 
         if ($authService->login($credentials, $this->remember)) {
-            return redirect(route('fundacao.dashboard'));
+            return redirect()->route('fundacao.dashboard');
         }
 
         if (!$this->isRateLimited($key)) {

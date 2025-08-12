@@ -64,7 +64,7 @@ class ResetPasswordForm extends Component
         if ($status === Password::PASSWORD_RESET) {
             RateLimiter::clear($key);
             flash()->success("Senha alterada com sucesso!");
-            return $this->redirect(route('login'), navigate: true);
+            return redirect()->route('login');
         }
 
         if (!$this->isRateLimited($key)) {
