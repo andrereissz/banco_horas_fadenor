@@ -1,24 +1,28 @@
-<div class="max-w-md mx-auto p-6 bg-base-100 rounded-box shadow">
-    @if ($status)
-        <div class="alert alert-success mb-4">
-            {{ $status }}
-        </div>
-    @endif
-
-    <h2 class="text-2xl font-bold mb-4">Recuperar Senha</h2>
-
-    <form wire:submit.prevent="sendResetLink" class="space-y-4">
+<div>
+    <div href="/" class="flex flex-col gap-2 justify-center items-center">
+        <a href="/" class="flex flex-col gap-2 justify-center items-center">
+            <img src="{{ asset('storage/images/logo-oficial-fadenor.png') }}" alt="Logo Fadenor" class="h-24">
+        </a>
+        <h3 class="2xl font-bold">RECUPERAÇÃO DE SENHA</h3>
+        <div class="divider divider-vertical"></div>
+    </div>
+    <form wire:submit.prevent="sendResetLink">
         <div>
-            <label for="email" class="label">
-                <span class="label-text">E-mail</span>
-            </label>
-            <input id="email" type="email" wire:model="email" placeholder="seu@email.com"
-                   class="input input-bordered w-full" />
-            @error('email')
-                <span class="text-error text-sm">{{ $message }}</span>
-            @enderror
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" type="email" name="email" wire:model.defer="email" required autofocus
+                class="mt-1 block w-full" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <button type="submit" class="btn btn-primary w-full">Enviar link de redefinição</button>
+        <div class="flex items-center justify-end mt-4 gap-3">
+            <button class="btn btn-accent" wire:loading.attr="disabled" wire:target="sendResetLink">
+                Recuperar Senha
+            </button>
+
+            <div wire:loading wire:target="sendResetLink" class="flex items-center gap-2 text-primary">
+                <span class="loading loading-spinner loading-sm"></span>
+                <span class="text-sm">Enviando...</span>
+            </div>
+        </div>
     </form>
 </div>

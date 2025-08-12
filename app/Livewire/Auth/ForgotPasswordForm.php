@@ -20,19 +20,26 @@ class ForgotPasswordForm extends Component
         $key = $this->getRateLimiterKey();
 
         if ($this->isRateLimited($key)) {
-            return $this->sendError('Muitas tentativas. Tente novamente em alguns minutos.');
+            $this->resetErrorBag();
+            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
+            $this->addError('email', 'Muitas tentativas. Aguarde um momento e tente novamente.');
+            return;
         }
 
         $this->validate();
 
         $status = $service->sendResetLink($this->email);
+
         $this->status = __($status);
 
         if ($status === Password::RESET_LINK_SENT) {
-            $this->sendSuccess(__($status), $key);
+            $this->sendSuccess("Solicitação de redefinição de senha enviada com sucesso!", "Sucesso!");
             return redirect()->route('login');
         }
-        return $this->sendError(__($status), $key);
+
+        if (!$this->isRateLimited($key)) {
+            return $this->sendError("Ocorreu um erro ao enviar a solicitação de redefinição de senha.", $key);
+        }
     }
 
     private function isRateLimited(string $key): bool
@@ -53,8 +60,6 @@ class ForgotPasswordForm extends Component
 
         flash()->error($message);
         $this->addError('email', $message);
-
-        return redirect()->route('login');
     }
 
     private function sendSuccess(string $message, string $key = null)
@@ -63,7 +68,7 @@ class ForgotPasswordForm extends Component
             RateLimiter::clear($key);
         }
 
-        flash()->success($message);
+        flash()->success($message, 'Sucesso!');
         return redirect()->route('login')->with('status', $message);
     }
 
