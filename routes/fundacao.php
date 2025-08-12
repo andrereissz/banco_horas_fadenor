@@ -7,6 +7,8 @@ Route::middleware('guest:fundacao')->group(function () {
     Route::get('/login', function(){
         return view('fundacao.auth.login');
     })->name('login');
+    Route::get('/forgot-password', function () { return view('auth.forgot-password'); })->name('password.request');
+    Route::get('/reset-password/{token}', function ($token) { return view('auth.reset-password', ['token' => $token]); })->name('password.reset');
 });
 
 Route::middleware('auth:fundacao')->group(function () {
