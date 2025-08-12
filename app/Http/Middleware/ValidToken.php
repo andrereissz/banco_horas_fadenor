@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\BolsaServiceInterface;
+use App\Services\Interfaces\Bolsas\BolsaServiceInterface;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
