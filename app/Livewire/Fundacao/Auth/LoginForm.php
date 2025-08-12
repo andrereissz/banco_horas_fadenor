@@ -41,7 +41,7 @@ class LoginForm extends Component
 
         if ($this->isRateLimited($key)) {
             $this->resetErrorBag();
-            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
+            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.', 'Erro!');
             $this->addError('username', 'Muitas tentativas. Aguarde um momento e tente novamente.');
             return;
         }
@@ -76,7 +76,7 @@ class LoginForm extends Component
             RateLimiter::hit($key);
         }
 
-        flash()->error($message);
+        flash()->error($message, 'Erro!');
         $this->addError('username', $message);
 
         return null;
