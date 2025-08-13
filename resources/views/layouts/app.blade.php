@@ -30,7 +30,9 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="flex items-center justify-center w-full p-8">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
         @livewireScripts

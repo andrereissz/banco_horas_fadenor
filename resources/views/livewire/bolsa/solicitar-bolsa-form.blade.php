@@ -1,4 +1,4 @@
-<div>
+<div class="card bg-base-100 w-full shadow-md p-4">
     <form wire:submit.prevent="solicitarBolsa" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         @csrf
         <fieldset class="fieldset border border-gray-400 p-4 rounded-md md:col-span-2">
