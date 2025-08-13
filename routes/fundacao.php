@@ -24,7 +24,7 @@ Route::middleware('auth:fundacao')->group(function () {
     })->name('solicitar-bolsa');
 
     Route::post('/logout', [LogoutController::class, 'destroy'])->name('logout');
-    Route::get('/profile', function () {
-        return view('fundacao.profile.edit');
-    })->name('profile.edit');
+    Route::get('/password-update', function () {
+        return view('fundacao.user-password-update');
+    })->name('password.update');
 });
