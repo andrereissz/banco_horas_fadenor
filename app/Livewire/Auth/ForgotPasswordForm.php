@@ -10,7 +10,6 @@ use Livewire\Component;
 class ForgotPasswordForm extends Component
 {
     public $email;
-
     public $status;
 
     protected $rules = [
@@ -19,76 +18,49 @@ class ForgotPasswordForm extends Component
 
     protected function validationAttributes(): array
     {
-        return [
-            'email' => 'E-mail',
-        ];
+        return ['email' => 'E-mail'];
     }
 
     protected function messages(): array
     {
-        return [
-            'required' => 'O campo :attribute é obrigatório.',
-        ];
+        return ['required' => 'O campo :attribute é obrigatório.'];
     }
 
     public function sendResetLink(AuthServiceInterface $service)
     {
-        $key = $this->getRateLimiterKey();
+        $key         = $this->throttleKey();
+        $maxAttempts = 5;     // máximo de tentativas
+        $decay       = 60;    // janela (em segundos)
 
-        if ($this->isRateLimited($key)) {
+        $result = RateLimiter::attempt($key, $maxAttempts, function () use ($service) {
+            $this->validate();
+
+            $status = $service->sendResetLink($this->email);
+            $this->status = __($status);
+
+            if ($status === Password::RESET_LINK_SENT) {
+                RateLimiter::clear($this->throttleKey());
+                flash()->success('Solicitação de redefinição de senha enviada com sucesso!');
+                return $this->redirect(route('login'), navigate: true);
+            }
+
+            flash()->error('Ocorreu um erro ao enviar a solicitação de redefinição de senha.');
+            return null;
+        }, $decay);
+
+        if ($result === false) {
+            $seconds = RateLimiter::availableIn($key);
             $this->resetErrorBag();
-            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
-            $this->addError('email', 'Muitas tentativas. Aguarde um momento e tente novamente.');
-
+            flash()->error("Muitas tentativas. Tente novamente em {$seconds}s.");
             return;
         }
 
-        $this->validate();
-
-        $status = $service->sendResetLink($this->email);
-
-        $this->status = __($status);
-
-        if ($status === Password::RESET_LINK_SENT) {
-            $this->sendSuccess('Solicitação de redefinição de senha enviada com sucesso!', $key);
-
-            return redirect()->route('login');
-        }
-
-        if (! $this->isRateLimited($key)) {
-            return $this->sendError('Ocorreu um erro ao enviar a solicitação de redefinição de senha.', $key);
-        }
+        return $result;
     }
 
-    private function isRateLimited(string $key): bool
+    private function throttleKey(): string
     {
-        return ! RateLimiter::remaining($key, 5);
-    }
-
-    private function getRateLimiterKey(): string
-    {
-        return 'reset:'.request()->ip();
-    }
-
-    private function sendError(string $message, ?string $key = null)
-    {
-        if ($key) {
-            RateLimiter::hit($key);
-        }
-
-        flash()->error('Ocorreu um erro ao enviar a solicitação de redefinição de senha.');
-        $this->addError('email', $message);
-    }
-
-    private function sendSuccess(string $message, ?string $key = null)
-    {
-        if ($key) {
-            RateLimiter::clear($key);
-        }
-
-        flash()->success($message);
-
-        return redirect()->route('login');
+        return 'forgot:' . sha1(($this->email ?? 'guest') . '|' . request()->ip());
     }
 
     public function render()
