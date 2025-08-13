@@ -4,6 +4,7 @@ namespace App\Livewire\Fundacao\Auth;
 
 use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class LoginForm extends Component
@@ -39,50 +40,35 @@ class LoginForm extends Component
 
     public function authenticate(AuthServiceInterface $authService)
     {
-        $key = $this->getRateLimiterKey();
+        $key         = $this->throttleKey();
+        $maxAttempts = 5;     // máximo de tentativas
+        $decay       = 60;    // janela (em segundos)
 
-        if ($this->isRateLimited($key)) {
+        $result = RateLimiter::attempt($key, $maxAttempts, function () use ($authService) {
+            $credentials = $this->validate();
+
+            if ($authService->login($credentials, $this->remember)) {
+                RateLimiter::clear($this->throttleKey());
+                return redirect()->route('fundacao.dashboard');
+            }
+
+            flash()->error('Usuário ou senha incorretos.');
+            $this->addError('username', 'Usuário ou senha incorretos.');
+            $this->reset();
+            return null;
+        }, $decay);
+
+        if ($result === false) {
+            $seconds = RateLimiter::availableIn($key);
             $this->resetErrorBag();
-            flash()->error('Muitas tentativas. Tente novamente em alguns minutos.');
-            $this->addError('username', 'Muitas tentativas. Aguarde um momento e tente novamente.');
-
+            flash()->error("Muitas tentativas. Tente novamente em {$seconds}s.");
             return;
         }
-
-        $credentials = $this->validate();
-
-        if ($authService->login($credentials, $this->remember)) {
-            return redirect()->route('fundacao.dashboard');
-        }
-
-        if (! $this->isRateLimited($key)) {
-            return $this->sendError('Usuário ou senha incorretos.', $key);
-        }
-
     }
 
-    /*** Helpers compartilhados ***/
-    private function isRateLimited(string $key): bool
+    private function throttleKey(): string
     {
-        // 5 tentativas por IP
-        return ! RateLimiter::remaining($key, 5);
-    }
-
-    private function getRateLimiterKey(): string
-    {
-        return 'login:'.request()->ip();
-    }
-
-    private function sendError(string $message, ?string $key = null)
-    {
-        if ($key) {
-            RateLimiter::hit($key);
-        }
-
-        flash()->error($message);
-        $this->addError('username', $message);
-
-        return null;
+        return 'login-fundacao:' . request()->ip();
     }
 
     public function render()
