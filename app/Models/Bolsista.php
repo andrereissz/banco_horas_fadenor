@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\BolsaEscolaridade;
+use App\Enums\BolsaEstadoCivil;
+use App\Enums\BolsaRacaCor;
 use App\Notifications\ResetPasswordBolsistaNotification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -13,6 +16,12 @@ use Illuminate\Support\Facades\Hash;
 class Bolsista extends User
 {
     use HasFactory, HasUuids;
+
+    protected $casts = [
+        'escolaridade' => BolsaEscolaridade::class,
+        'estado_civil' => BolsaEstadoCivil::class,
+        'raca_cor' => BolsaRacaCor::class,
+    ];
 
     protected $fillable = [
         // Dados pessoais
