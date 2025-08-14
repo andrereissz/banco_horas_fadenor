@@ -48,7 +48,7 @@
 
                     <tr>
                         <td style="padding: 0 40px 40px 40px; text-align: center;">
-                            <a href="" target="_blank"
+                            <a href={{ route('bolsistas.registrar', ['bolsa_token' => $bolsa->token]) }} target="_blank"
                                 style="background-color: #3490dc; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                                 Acessar Ficha de Cadastro
                             </a>
