@@ -12,8 +12,18 @@
         <!-- cpf -->
         <div>
             <x-input-label for="cpf" :value="'CPF'" />
-            <x-text-input id="cpf" class="block mt-1 w-full" type="text" name="cpf" :value="old('cpf')"
-                required autofocus autocomplete="cpf" wire:model.defer="cpf" />
+            <div class="form-control w-full">
+
+                <input type="text" id="cpf" name="cpf" wire:model.defer="cpf"
+                    class="input input-bordered w-full @error('cpf') input-error @enderror" placeholder="000.000.000-00"
+                    maxlength="14">
+
+                @error('cpf')
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ $message }}</span>
+                    </label>
+                @enderror
+            </div>
             <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
         </div>
 
@@ -46,4 +56,23 @@
             <button class="btn btn-primary w-1/4" type="submit">Login</button>
         </div>
     </form>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#cpf').mask('000.000.000-00', {
+                reverse: false
+            });
+
+            // Mantém apenas números no Livewire
+            $('#cpf').on('blur', function() {
+                let onlyNumbers = $(this).val().replace(/\D/g, '');
+                @this.set('cpf', onlyNumbers);
+            });
+        });
+    </script>
 </div>

@@ -96,7 +96,7 @@ class BolsaService implements BolsaServiceInterface
 
     public function checkToken(Bolsa $bolsa): bool
     {
-        if ($bolsa->token_expires_at < now() || $bolsa->status != BolsaStatus::AguardandoEnvio || $bolsa->status != BolsaStatus::AguardandoResposta) {
+        if ($bolsa->token_expires_at < now() || $bolsa->status > 1) {
             return false;
         }
 
@@ -109,7 +109,7 @@ class BolsaService implements BolsaServiceInterface
             if ($file instanceof UploadedFile) {
                 $bolsa->documentos()->create([
                     'nome' => $file->getClientOriginalName(),
-                    'caminho' => $file->store('documentos/'.$bolsa->id),
+                    'caminho' => $file->store('documentos/' . $bolsa->id),
                     'tipo' => $data['tipo'],
                 ]);
             }

@@ -46,9 +46,13 @@ class LoginForm extends Component
 
         $result = RateLimiter::attempt($key, $maxAttempts, function () use ($authService) {
             $credentials = $this->validate();
-
             if ($authService->login($credentials, $this->remember)) {
+                $token  = session()->pull('bolsa_token');
                 RateLimiter::clear($this->throttleKey());
+
+                if($token) {
+                    return redirect()->route('bolsistas.confirmar', ['bolsa_token' => $token]);
+                }
                 return redirect()->route('bolsistas.dashboard');
             }
 

@@ -55,7 +55,7 @@ class LoginForm extends Component
             flash()->error('Usuário ou senha incorretos.');
             $this->addError('username', 'Usuário ou senha incorretos.');
             $this->reset();
-            return null;
+            return redirect()->route('fundacao.login');
         }, $decay);
 
         if ($result === false) {
