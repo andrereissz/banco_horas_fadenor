@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class RegisterForm extends Component
+class CheckCpfForm extends Component
 {
     public $bolsa_token;
 
@@ -45,7 +45,7 @@ class RegisterForm extends Component
     {
         $result = RateLimiter::attempt($this->throttleKey(), 5, function () use ($bolsistaService) {
             $this->validate();
-            
+
             $cpf = Str::replace(['-', '.'], '', $this->cpf);
             if (!$this->validarCPF($cpf)) {
                 flash()->error('CPF inválido');
@@ -101,6 +101,6 @@ class RegisterForm extends Component
 
     public function render()
     {
-        return view('livewire.bolsistas.auth.register-form');
+        return view('livewire.bolsistas.auth.check-cpf-form');
     }
 }
