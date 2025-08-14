@@ -31,7 +31,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="'Senha'" />
 
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
+            <input id="password" class="input input-bordered w-full @error('password') input-error @enderror" type="password" name="password" required
                 autocomplete="current-password" wire:model.defer="password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />

@@ -11,8 +11,8 @@
         <!-- Username -->
         <div>
             <x-input-label for="username" :value="'Usuário'" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
-                required autofocus autocomplete="username" wire:model.defer="username" />
+            <input id="username" class="input input-bordered w-full block mt-1 @error('username') input-error @enderror" type="text" name="username" :value="old('username')"
+                autofocus autocomplete="username" wire:model.defer="username" required/>
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
@@ -20,8 +20,8 @@
         <div class="mt-4">
             <x-input-label for="password" :value="'Senha'" />
 
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" wire:model.defer="password" />
+            <input id="password" class="input input-bordered w-full block mt-1 @error('password') input-error @enderror" type="password" name="password"
+                autocomplete="current-password" wire:model.defer="password" required/>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
