@@ -234,10 +234,10 @@
                 </div>
             </fieldset>
 
-            <fieldset class="grid grid-cols-5 gap-4 fieldset border border-gray-400 p-4 rounded-md">
+            <fieldset class="grid grid-cols-4 gap-4 fieldset border border-gray-400 p-4 rounded-md">
                 <legend class="fieldset-legend font-semibold px-2">Documentação</legend>
-                <div class="col-span-2">
-                    <x-input-label class="label"><span class="label-text">RG (SOMENTE LETRAS E NÚMEROS) *</span></x-input-label>
+                <div class="col-span-1">
+                    <x-input-label class="label"><span class="label-text">RG (LETRAS E NÚMEROS) *</span></x-input-label>
                     <x-text-input type="text" class="input input-bordered w-full" wire:model.defer="rg" required data-alnum />
                     @error('rg')
                         <x-input-error :messages="$errors->get('rg')"/>
@@ -264,8 +264,39 @@
                         <x-input-error :messages="$errors->get('rgDataExpedicao')"/>
                     @enderror
                 </div>
+
+                <div class="col-span-1">
+                    <x-input-label class="label"><span class="label-text">TÍTULO DE ELEITOR (NÚMEROS)</span></x-input-label>
+                    <x-text-input type="text" class="input input-bordered w-full" wire:model.defer="tituloEleitor" required data-digits />
+                    @error('tituloEleitor')
+                        <x-input-error :messages="$errors->get('tituloEleitor')"/>
+                    @enderror
+                </div>
+                <div class="col-span-1">
+                    <x-input-label class="label" for="tituloEleitorZona"><span class="label-text">ZONA</span></x-input-label>
+                    <x-text-input type="text" id="tituloEleitorZona" class="input input-bordered w-full" wire:model.defer="tituloEleitorZona" required data-digits />
+                    @error('tituloEleitorZona')
+                        <x-input-error :messages="$errors->get('tituloEleitorZona')"/>
+                    @enderror
+                </div>
+                <div class="col-span-">
+                    <x-input-label class="label" for="tituloEleitorSecao"><span class="label-text">SEÇÃO</span></x-input-label>
+                    <x-text-input type="text" id="tituloEleitorSecao" class="input input-bordered w-full" wire:model.defer="tituloEleitorSecao" required data-digits />
+                    @error('tituloEleitorSecao')
+                        <x-input-error :messages="$errors->get('tituloEleitorSecao')"/>
+                    @enderror
+                </div>
+
+                <div class="col-span-1">
+                    <x-input-label class="label"><span class="label-text">CERTIFICADO DE RESERVISTA</span></x-input-label>
+                    <x-text-input type="text" class="input input-bordered w-full" wire:model.defer="certificadoReservista" data-digits />
+                    @error('certificadoReservista')
+                        <x-input-error :messages="$errors->get('certificadoReservista')"/>
+                    @enderror
+                </div>
             </fieldset>
         </div>
+        <button class="btn btn-accent w-1/4" type="submit">Cadastrar</button>
     </form>
 
     {{-- OVERLAY DE LOADING GLOBAL (qualquer ação Livewire) --}}
