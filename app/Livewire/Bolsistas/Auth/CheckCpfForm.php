@@ -45,13 +45,11 @@ class CheckCpfForm extends Component
     {
         $result = RateLimiter::attempt($this->throttleKey(), 5, function () use ($bolsistaService) {
             $this->validate();
-
-            $cpf = Str::replace(['-', '.'], '', $this->cpf);
-            if (!$this->validarCPF($cpf)) {
+            if (!$this->validarCPF($this->cpf)) {
                 flash()->error('CPF inválido');
                 return redirect()->route('bolsistas.registrar', ['bolsa_token' => $this->bolsa_token]);
             }
-            if ($bolsistaService->find($cpf) !== null) {
+            if ($bolsistaService->find($this->cpf) !== null) {
                 RateLimiter::clear($this->throttleKey());
                 session(['bolsa_token' => $this->bolsa_token]);
                 return redirect()->route('bolsistas.login',);
