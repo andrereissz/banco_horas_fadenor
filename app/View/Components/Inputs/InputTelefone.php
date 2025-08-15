@@ -13,7 +13,6 @@ class InputTelefone extends Component
     public bool $required;
     public string $label;
     public string $class;
-    public string $placeholder;
 
     public function __construct(
         string $name = 'telefone',
