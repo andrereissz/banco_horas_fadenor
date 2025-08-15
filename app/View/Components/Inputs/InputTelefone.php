@@ -22,7 +22,6 @@ class InputTelefone extends Component
         bool $required = false,
         string $label = 'Telefone',
         string $class = 'input input-bordered w-full',
-        string $placeholder = '(00) 00000-0000',
     ) {
         $this->name = $name;
         $this->id = $id;
@@ -30,7 +29,6 @@ class InputTelefone extends Component
         $this->required = $required;
         $this->label = $label;
         $this->class = $class;
-        $this->placeholder = $placeholder;
     }
 
     public function render(): View|string

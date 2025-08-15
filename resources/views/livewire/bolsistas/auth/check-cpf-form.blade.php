@@ -1,14 +1,16 @@
 <div>
+    <div class="flex flex-col gap-2 justify-center items-center">
+        <a href="/" class="flex flex-col gap-2 justify-center items-center">
+            <img src="{{ asset('storage/images/logo-oficial-fadenor.png') }}" alt="Logo Fadenor" class="h-24">
+        </a>
+        <h3 class="2xl font-bold">CONFIRMAÇÃO DE BOLSA</h3>
+        <div class="divider divider-vertical"></div>
+    </div>
     <form wire:submit.prevent="checkCpf">
         @csrf
         <div>
-            <x-input-label for="cpf" :value="'Digite o seu CPF'" />
-            <div class="form-control w-full">
-
-                <input type="text" id="cpf" name="cpf" wire:model.defer="cpf"
-                    class="input input-bordered w-full @error('cpf') input-error @enderror" placeholder="000.000.000-00"
-                    maxlength="14" required>
-            </div>
+            <x-input-label for="cpf" :value="'Informe o CPF'" />
+            <x-inputs.input-cpf id="cpf" name="cpf" required wire:model.defer="cpf" required />
             <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
         </div>
 
@@ -18,22 +20,4 @@
             </button>
         </div>
     </form>
-
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#cpf').mask('000.000.000-00', {
-                reverse: false
-            });
-
-            // Mantém apenas números no Livewire
-            $('#cpf').on('blur', function() {
-                let onlyNumbers = $(this).val().replace(/\D/g, '');
-                @this.set('cpf', onlyNumbers);
-            });
-        });
-    </script>
 </div>

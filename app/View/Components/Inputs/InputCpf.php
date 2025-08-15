@@ -22,7 +22,6 @@ class InputCpf extends Component
         bool $required = false,
         string $label = 'CPF',
         string $class = 'input input-bordered w-full',
-        string $placeholder = '000.000.000-00',
     ) {
         $this->name = $name;
         $this->id = $id;
@@ -30,7 +29,6 @@ class InputCpf extends Component
         $this->required = $required;
         $this->label = $label;
         $this->class = $class;
-        $this->placeholder = $placeholder;
     }
 
     public function render(): View|string

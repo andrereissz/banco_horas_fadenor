@@ -1,26 +1,3 @@
-@php
-  $inputId = $id ?? $name.'-'.uniqid();
-@endphp
+@props(['disabled' => false])
 
-<div class="form-control">
-  <label class="label" for="{{ $inputId }}">
-    <span class="label-text">{{ $label }}@if($required) * @endif</span>
-  </label>
-
-  <input
-    id="{{ $inputId }}"
-    type="text"
-    name="{{ $name }}"
-    value="{{ old($name, $value) }}"
-    placeholder="{{ $placeholder }}"
-    class="{{ $class }}"
-    inputmode="numeric"
-    autocomplete="off"
-    data-cpf
-    @if($required) required @endif
-  >
-
-  @error($name)
-    <span class="text-error text-sm">{{ $message }}</span>
-  @enderror
-</div>
+<input @disabled($disabled) name={{ $name }} id={{ $id }} value={{ $value }} @if($required) required @endif {{ $attributes->merge(['class' => $class ]) }} data-cpf>
