@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('fundacao.dashboard') }}">
+                    <a href={{ route('fundacao.dashboard') }}>
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -48,7 +48,7 @@
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('fundacao.logout') }}">
+                        <form method="POST" action={{ route('fundacao.logout') }}>
                             @csrf
 
                             <x-dropdown-link :href="route('fundacao.logout')"
@@ -59,7 +59,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-                <form method="POST" action="{{ route('fundacao.logout') }}">
+                <form method="POST" action={{ route('fundacao.logout') }}>
                     @csrf
 
                     <button class="btn btn-ghost" type="submit" :href="route('fundacao.logout')"
@@ -105,7 +105,7 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('fundacao.logout') }}">
+                <form method="POST" action={{ route('fundacao.logout') }}>
                     @csrf
 
                     <x-responsive-nav-link :href="route('fundacao.logout')"
