@@ -9,7 +9,7 @@
     <form wire:submit.prevent="sendResetLink">
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" type="email" name="email" wire:model.defer="email" required autofocus
+            <x-text-input id="email" type="email" name="email" wire:model="email" required autofocus
                 class="mt-1 block w-full" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>

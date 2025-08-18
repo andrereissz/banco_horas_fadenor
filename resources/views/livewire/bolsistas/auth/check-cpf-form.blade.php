@@ -10,7 +10,7 @@
         @csrf
         <div>
             <x-input-label for="cpf" :value="'Informe o CPF'" />
-            <x-inputs.input-cpf id="cpf" name="cpf" required wire:model.defer="cpf" required />
+            <x-inputs.input-cpf id="cpf" name="cpf" required wire:model="cpf" required />
             <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
         </div>
 

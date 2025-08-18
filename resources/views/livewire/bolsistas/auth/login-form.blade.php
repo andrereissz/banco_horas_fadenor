@@ -14,7 +14,7 @@
             <x-input-label for="cpf" :value="'CPF'" />
             <div class="form-control w-full">
 
-                <input type="text" id="cpf" name="cpf" wire:model.defer="cpf"
+                <input type="text" id="cpf" name="cpf" wire:model="cpf"
                     class="input input-bordered w-full @error('cpf') input-error @enderror" placeholder="000.000.000-00"
                     maxlength="14">
 
@@ -32,7 +32,7 @@
             <x-input-label for="password" :value="'Senha'" />
 
             <input id="password" class="input input-bordered w-full @error('password') input-error @enderror" type="password" name="password" required
-                autocomplete="current-password" wire:model.defer="password" />
+                autocomplete="current-password" wire:model="password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
