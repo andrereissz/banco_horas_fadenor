@@ -18,7 +18,7 @@ class BolsistaService implements BolsistaServiceInterface
         return Bolsista::where('cpf', $cpf)->first();
     }
 
-    public function register(array $data): Bolsista
+    public function create(array $data): Bolsista
     {
         return Bolsista::create([
             'password' => $data['password'],

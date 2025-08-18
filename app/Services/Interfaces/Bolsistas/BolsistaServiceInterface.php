@@ -9,6 +9,8 @@ interface BolsistaServiceInterface
 {
     public function get(): Collection;
 
+    public function create(array $data): Bolsista;
+
     public function find(string $cpf): ?Bolsista;
 
     public function update(Bolsista $Bolsista, array $data): bool;
