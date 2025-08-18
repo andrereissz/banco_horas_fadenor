@@ -6,7 +6,7 @@
         <h3 class="2xl font-bold">ACESSO COLABORADORES</h3>
         <div class="divider divider-vertical"></div>
     </div>
-    <form wire:submit.prevent="authenticate">
+    <form wire:submit="authenticate">
         @csrf
         <!-- Username -->
         <div>

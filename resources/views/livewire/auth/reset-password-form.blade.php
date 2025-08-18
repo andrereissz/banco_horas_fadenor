@@ -6,7 +6,7 @@
         <h3 class="2xl font-bold">REDEFINIÇÃO DE SENHA</h3>
         <div class="divider divider-vertical"></div>
     </div>
-    <form wire:submit.prevent="resetPassword">
+    <form wire:submit="resetPassword">
         <div>
             <x-input-label for="password" :value="'Nova Senha'" />
             <div class="w-full">

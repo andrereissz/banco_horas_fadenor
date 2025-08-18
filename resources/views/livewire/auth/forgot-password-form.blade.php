@@ -6,7 +6,7 @@
         <h3 class="2xl font-bold">RECUPERAÇÃO DE SENHA</h3>
         <div class="divider divider-vertical"></div>
     </div>
-    <form wire:submit.prevent="sendResetLink">
+    <form wire:submit="sendResetLink">
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" type="email" name="email" wire:model="email" required autofocus

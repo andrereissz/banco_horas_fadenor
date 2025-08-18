@@ -1,5 +1,5 @@
 <div class="card bg-base-100 w-full shadow-md p-4">
-    <form wire:submit.prevent="updatePassword">
+    <form wire:submit="updatePassword">
         @csrf
         <fieldset class="fieldset border border-gray-400 p-4 rounded-md md:col-span-2">
             <legend class="fieldset-legend font-semibold px-2">Alterar Senha</legend>

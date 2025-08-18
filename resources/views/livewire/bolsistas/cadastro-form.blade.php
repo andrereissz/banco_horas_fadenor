@@ -1,5 +1,5 @@
 {{-- resources/views/livewire/bolsistas/cadastro-form.blade.php --}}
-<div class="md:fit lg:w-4xl">
+<div class="md:fit">
     <div class="flex flex-col gap-2 justify-center items-center">
         <img src="{{ asset('storage/images/logo-oficial-fadenor.png') }}" alt="Logo Fadenor" class="h-24">
         <h3 class="2xl font-bold">FORMULÁRIO DE CADASTRO</h3>
@@ -11,7 +11,7 @@
         <p class="text-base-content/70">Preencha os campos obrigatórios (*) e revise seus dados antes de salvar.</p>
     </div>
 
-    <form wire:submit.prevent="submit" class="space-y-8" aria-live="polite">
+    <form wire:submit="registrar" class="space-y-8" aria-live="polite">
         <div class="flex flex-col gap-4">
             {{-- DADOS DE LOGIN --}}
             <fieldset class="grid grid-cols-3 gap-4 fieldset border border-gray-400 p-4 rounded-md">
@@ -106,8 +106,7 @@
 
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">Data de Nascimento *</span></x-input-label>
-                    <x-text-input type="date" class="input input-bordered w-full" wire:model="dataNasc"
-                        required />
+                    <x-text-input type="date" class="input input-bordered w-full" wire:model="dataNasc" required />
                     @error('dataNasc')
                         <x-input-error :messages="$errors->get('dataNasc')" />
                     @enderror
@@ -115,8 +114,9 @@
 
 
                 <div class="col-span-1">
+                    {{ $sexo }}
                     <x-input-label class="label"><span class="label-text">Sexo *</span></x-input-label>
-                    <select class="select select-bordered w-full" wire:model="sexo" required>
+                    <select class="select select-bordered w-full" wire:model.live="sexo" required>
                         <option value="" disabled selected>Selecione</option>
                         <option value="M">Masculino</option>
                         <option value="F">Feminino</option>
@@ -130,7 +130,7 @@
                 <div class="col-span-2">
                     <x-input-label class="label"><span class="label-text">Escolaridade *</span></x-input-label>
                     <select class="select select-bordered w-full" wire:model="escolaridade" required>
-                        <option value="" disabled selected>Selecione</option>
+                        <option value="0" disabled selected>Selecione</option>
                         @foreach (App\Enums\BolsaEscolaridade::cases() as $tipo)
                             <option value="{{ $tipo->value }}">{{ $tipo->label() }}</option>
                         @endforeach
@@ -143,7 +143,7 @@
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">Estado Cívil *</span></x-input-label>
                     <select class="select select-bordered w-full" wire:model="escolaridade" required>
-                        <option value="" disabled selected>Selecione</option>
+                        <option value="0" disabled selected>Selecione</option>
                         @foreach (App\Enums\BolsaEstadoCivil::cases() as $tipo)
                             <option value="{{ $tipo->value }}">{{ $tipo->label() }}</option>
                         @endforeach
@@ -155,8 +155,8 @@
 
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">Raça / Cor *</span></x-input-label>
-                    <select class="select select-bordered w-full" wire:model="escolaridade" required>
-                        <option value="" disabled selected>Selecione</option>
+                    <select class="select select-bordered w-full" wire:model="racaCor" required>
+                        <option value="0" disabled selected>Selecione</option>
                         @foreach (App\Enums\BolsaRacaCor::cases() as $tipo)
                             <option value="{{ $tipo->value }}">{{ $tipo->label() }}</option>
                         @endforeach
@@ -190,7 +190,7 @@
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">CEP *</span></x-input-label>
                     <x-text-input type="text" class="input input-bordered w-full" maxlength="9" required data-cep
-                        wire:model.blur="cep" wire:blur="buscarCep" {{-- chama ao perder o foco --}} />
+                        wire:model.blur="cep" wire:blur="buscarCep" />
                     <x-input-error :messages="$errors->get('cep')" class="mt-2" />
 
                     @error('bairro')
@@ -207,24 +207,22 @@
                 </div>
                 <div class="col-span-2">
                     <x-input-label class="label"><span class="label-text">Bairro *</span></x-input-label>
-                    <x-text-input type="text" class="input input-bordered w-full" wire:model="bairro"
-                        required />
+                    <x-text-input type="text" class="input input-bordered w-full" wire:model="bairro" required />
                     @error('bairro')
                         <x-input-error :messages="$errors->get('bairro')" />
                     @enderror
                 </div>
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">Número *</span></x-input-label>
-                    <x-text-input type="text" class="input input-bordered w-full" wire:model="numero"
-                        data-digits required />
+                    <x-text-input type="text" class="input input-bordered w-full" wire:model="numero" data-digits
+                        required />
                     @error('numero')
                         <x-input-error :messages="$errors->get('numero')" />
                     @enderror
                 </div>
                 <div class="col-span-1">
                     <x-input-label class="label"><span class="label-text">Complemento</span></x-input-label>
-                    <x-text-input type="text" class="input input-bordered w-full"
-                        wire:model="complemento" />
+                    <x-text-input type="text" class="input input-bordered w-full" wire:model="complemento" />
                     @error('complemento')
                         <x-input-error :messages="$errors->get('complemento')" />
                     @enderror
@@ -329,11 +327,12 @@
     </form>
 
     {{-- OVERLAY DE LOADING GLOBAL (qualquer ação Livewire) --}}
-    <div wire:loading
-        class="transition-opacity duration-75 fixed inset-0 z-50 bg-base-100/80 backdrop-blur-sm flex items-center justify-center">
-        <div class="bg-base-100 border border-base-200 shadow-xl rounded-2xl p-8 flex flex-col items-center">
+    <div wire:loading.delay.short class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
+        aria-live="polite" aria-busy="true">
+        <div
+            class="bg-base-100/90 border border-base-200 rounded-2xl shadow-xl px-6 py-5 flex flex-col items-center gap-3">
             <span class="loading loading-spinner loading-lg"></span>
-            <p class="mt-4 text-base-content/80">Carregando, por favor aguarde…</p>
+            <p class="text-base-content/80 text-sm">Carregando, por favor aguarde…</p>
         </div>
     </div>
 </div>

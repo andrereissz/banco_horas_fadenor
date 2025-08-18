@@ -6,7 +6,7 @@
         <h3 class="2xl font-bold">CONFIRMAÇÃO DE BOLSA</h3>
         <div class="divider divider-vertical"></div>
     </div>
-    <form wire:submit.prevent="checkCpf">
+    <form wire:submit="checkCpf">
         @csrf
         <div>
             <x-input-label for="cpf" :value="'Informe o CPF'" />
