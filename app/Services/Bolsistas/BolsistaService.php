@@ -33,7 +33,6 @@ class BolsistaService implements BolsistaServiceInterface
             'email' => $data['email'],
             'escolaridade' => $data['escolaridade'],
             'est_pais' => $data['est_pais'] ?? null,
-            'est_muni' => $data['est_muni'] ?? null,
             'muni_nasc' => $data['muni_nasc'],
             'uf_nasc' => $data['uf_nasc'],
             'cep' => $data['cep'],

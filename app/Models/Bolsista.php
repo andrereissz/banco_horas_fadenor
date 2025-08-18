@@ -38,7 +38,6 @@ class Bolsista extends User
 
         // Naturalidade
         'est_pais',
-        'est_muni',
         'muni_nasc',
         'uf_nasc',
 
