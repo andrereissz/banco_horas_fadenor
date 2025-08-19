@@ -11,6 +11,7 @@ class AuthBolsistaService implements AuthServiceInterface
 {
     public function login(array $credentials, bool $remember): bool
     {
+        $credentials['cpf'] = preg_replace('/\D/', '', $credentials['cpf']);
         return Auth::guard('bolsistas')->attempt($credentials, $remember);
     }
 
