@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 class ViaCepService implements ViaCepServiceInterface
 {
     public function __construct(
-        protected int $timeout = 3
+        protected int $timeout = 10
     ) {}
 
     public function buscar(string $cep): ?array
