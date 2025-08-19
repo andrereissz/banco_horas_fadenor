@@ -20,8 +20,8 @@ Route::middleware(ValidToken::class)->group(function () {
     Route::get('/registrar/{bolsa_token}', function ($bolsa_token) {
         return view('bolsistas.auth.check-cpf', ['bolsa_token' => $bolsa_token]);
     })->name('registrar');
-    Route::get('/cadastrar/{bolsa_token}', function () {
-        return view('bolsistas.cadastro');
+    Route::get('/cadastrar/{bolsa_token}', function ($bolsa_token) {
+        return view('bolsistas.cadastro', ['bolsa_token' => $bolsa_token]);
     })->name('cadastrar');
 });
 
