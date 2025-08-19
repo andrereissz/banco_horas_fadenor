@@ -76,12 +76,18 @@ class Bolsista extends User
         return $this->hasMany(Bolsa::class);
     }
 
-    public function password(): Attribute
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return Attribute::make(
-            set: fn ($value) => Hash::make($value),
-        );
+        return [
+            'password' => 'hashed',
+        ];
     }
+
 
     public function sendPasswordResetNotification($token)
     {
