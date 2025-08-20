@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::table('sessions', function (Blueprint $table) {
-            $table->uuid('user_id')->change();
+            $table->uuid('user_id')->nullable()->change();
         });
 
         Schema::enableForeignKeyConstraints();
@@ -28,7 +28,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::table('sessions', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->change();
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
         });
 
         Schema::enableForeignKeyConstraints();
