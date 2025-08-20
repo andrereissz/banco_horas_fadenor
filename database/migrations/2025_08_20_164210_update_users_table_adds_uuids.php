@@ -38,7 +38,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bolsas', function (Blueprint $table) {
-            $table->dropForeign('bolsistas_user_id_foreign');
+            $table->dropForeign('bolsas_user_id_foreign');
         });
 
         // 2. Altera o tipo da coluna 'user_id' em 'bolsistas' para UUID

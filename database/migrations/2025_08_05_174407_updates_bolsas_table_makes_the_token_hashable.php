@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bolsas', function (Blueprint $table) {
-            $table->dropIndex('token_unique');
+            $table->dropIndex('bolsas_token_unique');
             $table->string('token')->unique()->change();
             $table->dropColumn('token_expires_at');
         });
