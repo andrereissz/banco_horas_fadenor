@@ -40,7 +40,7 @@ class SolicitarBolsa extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: $this->bolsa->tipo == BolsaTipo::FADENOR->value ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
+            view: $this->bolsa->tipo == BolsaTipo::FADENOR ? 'mail.solicitar-bolsa-fadenor-mail' : 'mail.solicitar-bolsa-fapemig-mail',
             with: [
                 'bolsa' => $this->bolsa,
                 'bolsistaNome' => $this->bolsistaNome,
