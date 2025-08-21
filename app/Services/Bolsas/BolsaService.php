@@ -96,11 +96,15 @@ class BolsaService implements BolsaServiceInterface
 
     public function checkToken(Bolsa $bolsa): bool
     {
-        if ($bolsa->token_expires_at < now() || $bolsa->status > 1) {
+        if ($bolsa->token_expires_at < now()) {
             return false;
         }
 
-        return true;
+        if ($bolsa->status == BolsaStatus::AguardandoResposta) {
+            return true;
+        }
+
+        return false;
     }
 
     public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void
