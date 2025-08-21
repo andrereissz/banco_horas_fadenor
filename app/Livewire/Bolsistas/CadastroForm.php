@@ -5,45 +5,53 @@ namespace App\Livewire\Bolsistas;
 use App\Enums\BolsaEscolaridade;
 use App\Enums\BolsaEstadoCivil;
 use App\Enums\BolsaRacaCor;
+use App\Enums\BolsaStatus;
+use App\Services\Interfaces\Bolsas\BolsaServiceInterface;
+use App\Services\Interfaces\Bolsistas\BolsistaServiceInterface;
 use App\Services\Interfaces\ViaCep\ViaCepServiceInterface;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class CadastroForm extends Component
 {
-    public string $nome;
-    public string $dataNasc;
-    public string $nomeMae;
-    public string $nomePai;
-    public string $sexo;
-    public string $telefone;
-    public string $email;
-    public string $estPais;
-    public string $estMuni;
-    public string $muniNasc;
-    public string $ufNasc;
-    public string $cep;
-    public string $muniResid;
-    public string $ufResid;
-    public string $logradouro;
-    public string $numero;
-    public string $complemento;
-    public string $bairro;
-    public string $cpf;
-    public string $pis;
-    public string $rg;
-    public string $rgOrgao;
-    public string $rgOrgaoUf;
-    public string $rgDataEmissao;
-    public string $tituloEleitor;
-    public string $tituloZona;
-    public string $tituloSecao;
-    public string $certificadoReservista;
-    public string $password;
+    public string $nome = '';
+    public string $dataNasc = '';
+    public string $nomeMae = '';
+    public string $nomePai = '';
+    public string $sexo = '';
+    public string $telefone = '';
+    public string $email = '';
+    public string $estPais = '';
+    public string $estMuni = '';
+    public string $muniNasc = '';
+    public string $ufNasc = '';
+    public string $cep = '';
+    public string $muniResid = '';
+    public string $ufResid = '';
+    public string $logradouro = '';
+    public string $numero = '';
+    public string $complemento = '';
+    public string $bairro = '';
+    public string $cpf = '';
+    public string $pis = '';
+    public string $rg = '';
+    public string $rgOrgao = '';
+    public string $rgOrgaoUf = '';
+    public string $rgDataEmissao = '';
+    public string $tituloEleitor = '';
+    public string $tituloZona = '';
+    public string $tituloSecao = '';
+    public string $certificadoReservista = '';
+    public string $password = '';
+    public string $password_confirmation = '';
 
-    public int $escolaridade;
-    public int $estadoCivil;
+    public int $escolaridade = 0;
+    public int $estadoCivil = 0;
     public int $flag_estrangeiro = 0;
-    public int $racaCor;
+    public int $racaCor = 0;
+
+    public string $bolsa_token = '';
 
     protected function rules(): array
     {
@@ -53,15 +61,13 @@ class CadastroForm extends Component
             'nomeMae'               => ['required', 'string', 'max:255'],
             'nomePai'               => ['nullable', 'string', 'max:255'],
 
-            'sexo'                   => ['required', 'in:M,F,O'], // M/F/Outro (ajuste conforme sua regra)
-            'telefone'               => ['required', 'string', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
+            'telefone'               => ['required', 'string', 'min:14', 'max:15'],
             'email'                  => ['required', 'email:rfc,dns', 'max:255'],
 
-            'estPais'               => ['required', 'string', 'max:255'],
-            'estMuni'               => ['required', 'string', 'max:255'],
+            'estPais'               => [Rule::requiredIf(fn() => $this->flag_estrangeiro == 1)],
 
             'muniNasc'              => ['required', 'string', 'max:255'],
-            'ufNasc'                => ['required', 'string', 'size:2'],
+            'ufNasc'                => [Rule::requiredIf(fn() => $this->flag_estrangeiro == 0)],
 
             'cep'                    => ['required', 'string', 'regex:/^\d{5}-?\d{3}$/'],
             'muniResid'             => ['required', 'string', 'max:255'],
@@ -71,8 +77,8 @@ class CadastroForm extends Component
             'complemento'            => ['nullable', 'string', 'max:255'],
             'bairro'                 => ['required', 'string', 'max:255'],
 
-            'cpf'                    => ['required', 'string', 'digits:11'], // se tiver validador próprio, troque por 'cpf'
-            'pis'                    => ['nullable', 'string', 'digits_between:10,14'],
+            'cpf'                    => ['required', 'string', 'size:14'],
+            'pis'                    => ['nullable', 'string' , 'size:11'],
 
             'rg'                     => ['required', 'string', 'max:20'],
             'rgOrgao'               => ['required', 'string', 'max:50'],
@@ -80,16 +86,17 @@ class CadastroForm extends Component
             'rgDataEmissao'        => ['required', 'date'],
 
             'tituloEleitor'         => ['nullable', 'string', 'max:14'],
-            'tituloZona'            => ['nullable', 'string', 'max:4'],
+            'tituloZona'            => ['nullable', 'string', 'max:3'],
             'tituloSecao'           => ['nullable', 'string', 'max:4'],
 
             'certificadoReservista' => ['nullable', 'string', 'max:30'],
 
-            'password'               => ['required', 'string', 'min:8'],
+            'password'               => ['required', 'string', 'min:8', 'confirmed'],
 
-            'escolaridade'           => ['required', 'integer'],
-            'estadoCivil'           => ['required', 'integer'],
-            'racaCor'               => ['required', 'integer'],
+            'sexo'                   => ['required', 'in:M,F,O'],
+            'escolaridade'           => ['required', 'integer', Rule::enum(BolsaEscolaridade::class)],
+            'estadoCivil'           => ['required', 'integer', Rule::enum(BolsaEstadoCivil::class)],
+            'racaCor'               => ['required', 'integer', Rule::enum(BolsaRacaCor::class)],
         ];
     }
 
@@ -155,6 +162,27 @@ class CadastroForm extends Component
         ];
     }
 
+    public function registrar(BolsistaServiceInterface $bolsistaService, BolsaServiceInterface $bolsaService)
+    {
+        $data = $this->validate();
+        $result = RateLimiter::attempt($this->throttleKey(), 5, function () use ($bolsistaService, $bolsaService, $data) {
+            if ($bolsistaService->create($data) != null) {
+                RateLimiter::clear($this->throttleKey());
+                flash()->success('Cadastro registrado com sucesso.');
+                $bolsaService->updateStatus($bolsaService->findBolsaByToken($this->bolsa_token), BolsaStatus::Respondido);
+                return redirect()->route('bolsistas.login');
+            };
+
+            flash()->error('Erro ao registrar bolsista.');
+        }, 60);
+
+        if ($result === false) {
+            $seconds = RateLimiter::availableIn($this->throttleKey());
+            flash()->error("Muitas tentativas. Tente novamente em {$seconds}s.");
+            return;
+        }
+    }
+
     public function buscarCep(ViacepServiceInterface $viacep): void
     {
         $digits = preg_replace('/[^0-9]/', '', $this->cep);
@@ -178,6 +206,16 @@ class CadastroForm extends Component
         $this->complemento = $data['complemento'];
 
         $this->resetErrorBag('cep');
+    }
+
+    public function throttleKey(): string
+    {
+        return 'cadastro-bolsistas:' . request()->ip();
+    }
+
+    public function mount(string $bolsa_token): void
+    {
+        $this->bolsa_token = $bolsa_token;
     }
 
     public function render()
