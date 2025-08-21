@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
-class BolsaResource extends JsonResource
+class BolsaEditResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,11 +18,12 @@ class BolsaResource extends JsonResource
             'id' => $this->id,
             'solicitante' => $this->user->name,
             'status' => $this->status,
+            'tipo' => $this->tipo,
             'projeto_cod' => $this->projeto_cod,
             'projeto_nome' => $this->projeto_nome,
             'projeto_num' => $this->projeto_num,
-            'projeto_tipo' => $this->projeto_tipo,
             'data_inicio' => $this->data_inicio,
+            'data_fim' => $this->data_fim,
             'documentos' => DocumentoResource::collection($this->documentos),
         ];
     }
