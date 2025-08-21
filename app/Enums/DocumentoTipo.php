@@ -4,23 +4,23 @@ namespace App\Enums;
 
 enum DocumentoTipo: int
 {
-    case termo_bolsa = 0;
-    case termo_lgpd = 1;
-    case termo_raca = 2;
-    case documento_pessoal = 3;
-    case comprovante_residencia = 4;
-    case declaracao_academica = 5;
+    case TERMO_BOLSA = 0;
+    case TERMO_LGPD = 1;
+    case TERMO_RACA = 2;
+    case DOCUMENTO_PESSOAL = 3;
+    case COMPROVANTE_RESIDENCIA = 4;
+    case DECLARACAO_ACADEMICA = 5;
 
 
     public function label(): string
     {
         return match ($this) {
-            self::termo_bolsa => 'Termo de bolsa',
-            self::termo_lgpd => 'Termo de LGPD',
-            self::termo_raca => 'Termo de Raca/Cor',
-            self::documento_pessoal => 'Documento de Identificação Pessoal Com Foto (CIN, CNH, Passaporte, RG)',
-            self::comprovante_residencia => 'Comprovante de Residência',
-            self::declaracao_academica => 'Declaração acadêmica (Comprovante de Matrícula / Certificação de Grau Acadêmico)',
+            self::TERMO_BOLSA => 'Termo de bolsa',
+            self::TERMO_LGPD => 'Termo de LGPD',
+            self::TERMO_RACA => 'Termo de Raca/Cor',
+            self::DOCUMENTO_PESSOAL => 'Documento de Identificação Pessoal Com Foto (CIN, CNH, Passaporte, RG)',
+            self::COMPROVANTE_RESIDENCIA => 'Comprovante de Residência',
+            self::DECLARACAO_ACADEMICA => 'Declaração acadêmica (Comprovante de Matrícula / Certificação de Grau Acadêmico)',
         };
     }
 }
