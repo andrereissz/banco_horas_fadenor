@@ -16,6 +16,7 @@ class BolsistaService implements BolsistaServiceInterface
 
     public function find(string $cpf): ?Bolsista
     {
+        $cpf = preg_replace('/\D/', '', $cpf);
         return Bolsista::where('cpf', $cpf)->first();
     }
 
