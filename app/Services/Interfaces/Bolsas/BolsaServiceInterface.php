@@ -6,6 +6,7 @@ use App\Enums\BolsaStatus;
 use App\Models\Bolsa;
 use App\Models\Bolsista;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 
 interface BolsaServiceInterface
 {
@@ -27,7 +28,7 @@ interface BolsaServiceInterface
 
     public function checkToken(Bolsa $bolsa): bool;
 
-    public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void;
+    public function uploadDocumento(Bolsa $bolsa, string $type, UploadedFile $file): void;
 
     public function updateStatus(Bolsa $bolsa, BolsaStatus $newStatus);
 

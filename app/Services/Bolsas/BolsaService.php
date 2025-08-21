@@ -3,6 +3,7 @@
 namespace App\Services\Bolsas;
 
 use App\Enums\BolsaStatus;
+use App\Enums\DocumentoTipo;
 use App\Jobs\SendSolicitacaoMail;
 use App\Models\Bolsa;
 use App\Models\Bolsista;
@@ -107,24 +108,19 @@ class BolsaService implements BolsaServiceInterface
         return false;
     }
 
-    public function uploadDocumentos(Bolsa $bolsa, array $data, array $files): void
+    public function uploadDocumento(Bolsa $bolsa, string $type, UploadedFile $file): void
     {
-        foreach ($files as $file) {
-            if ($file instanceof UploadedFile) {
-                $bolsa->documentos()->create([
-                    'nome' => $file->getClientOriginalName(),
-                    'caminho' => $file->store('documentos/' . $bolsa->id),
-                    'tipo' => $data['tipo'],
-                ]);
-            }
-        }
+        $bolsa->documentos()->create([
+            'nome' => $file->getClientOriginalName(),
+            'caminho' => $file->store('documentos/' . $bolsa->id),
+            'tipo' => DocumentoTipo::from((int)$type)->value,
+        ]);
     }
 
     public function registrar(string $token, array $data, array $files): Bolsa
     {
         $bolsa = Bolsa::where('token', $token)->where('status', BolsaStatus::AguardandoResposta)->firstOrFail();
         $this->updateStatus($bolsa, BolsaStatus::Respondido);
-        $this->uploadDocumentos($bolsa, $data, $files);
 
         return $bolsa;
     }
