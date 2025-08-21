@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Bolsa;
 
-use App\Services\BolsaService;
-use Illuminate\Http\UploadedFile;
+use App\Enums\BolsaTipo;
+use App\Services\Bolsas\BolsaService;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -12,23 +12,31 @@ class SolicitarBolsaForm extends Component
 {
     use WithFileUploads;
 
-    public int $tipo = 0;
+    public int $tipo = BolsaTipo::FADENOR->value;
+
     public string $projetoCod = '';
+
     public string $projetoNome = '';
+
     public string $projetoNum = '';
+
     public string $emailDestinatario = '';
+
     public string $nome = '';
+
     public string $valor = '';
+
     public string $dataInicio = '';
+
     public string $dataFim = '';
 
     protected function rules(): array
     {
         return [
-            'tipo' => ['required', 'integer', Rule::in([0, 1])],
+            'tipo' => ['required', 'integer', Rule::enum(BolsaTipo::class)],
             'projetoCod' => 'required',
             'projetoNome' => 'required',
-            'projetoNum' => [Rule::requiredIf(fn() => $this->tipo === 1)],
+            'projetoNum' => [Rule::requiredIf(fn () => $this->tipo == BolsaTipo::FAPEMIG->value)],
             'emailDestinatario' => 'required|email',
             'nome' => 'required',
             'valor' => 'required|numeric',
@@ -55,7 +63,7 @@ class SolicitarBolsaForm extends Component
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
-            'after:dataInicio' => 'A data de fim deve ser posterior à data de início.'
+            'after:dataInicio' => 'A data de fim deve ser posterior à data de início.',
         ];
     }
 
@@ -68,15 +76,15 @@ class SolicitarBolsaForm extends Component
 
             flash()->success('Bolsa solicitada com sucesso!');
 
-            $this->redirect(route('solicitar-bolsa'));
+            $this->redirect(route('fundacao.solicitar-bolsa'));
 
         } catch (\Exception $e) {
-            flash()->error('Ocorreu um erro inesperado: ' . $e->getMessage());
+            flash()->error($e->getMessage());
         }
     }
 
     public function render()
     {
-        return view('livewire.bolsas.solicitar-bolsa-form');
+        return view('livewire.bolsa.solicitar-bolsa-form');
     }
 }

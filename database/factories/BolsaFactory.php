@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\BolsaStatus;
+use App\Enums\BolsaTipo;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Bolsa>
@@ -18,17 +19,15 @@ class BolsaFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
             'user_id' => 1,
-            'token' => Str::uuid(),
-            'nome' => $this->faker->name(),
             'projeto_cod' => '111',
             'projeto_nome' => 'projeto teste',
             'projeto_num' => 'APQ-09512',
-            'tipo' => 1,
+            'status' => BolsaStatus::AguardandoResposta,
+            'tipo' => BolsaTipo::FAPEMIG->value,
             'valor' => '100000',
             'data_inicio' => '2025-07-01',
-            'data_fim' => '2026-07-01'
+            'data_fim' => '2026-07-01',
         ];
     }
 }

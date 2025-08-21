@@ -2,22 +2,33 @@
 
 namespace App\Models;
 
+use App\Enums\BolsaStatus;
+use App\Enums\BolsaTipo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Bolsa extends Model
 {
-    use HasUuids, HasFactory;
+    use HasFactory, HasUuids;
+
+    protected $casts = [
+        'status' => BolsaStatus::class,
+        'tipo' => BolsaTipo::class,
+    ];
 
     protected $fillable = [
         // Vínculo
+        'bolsista_id',
         'user_id',
 
-        // Dados da bolsa
-        'token',
+        // Dados Básicos
+        'nome',
+
+        // Dados da Bolsa
         'status',
         'projeto_cod',
         'projeto_nome',
@@ -27,51 +38,24 @@ class Bolsa extends Model
         'data_fim',
         'valor',
 
-        // Dados pessoais
-        'nome',
-        'data_nasc',
-        'nome_mae',
-        'nome_pai',
-        'estado_civil',
-        'raca_cor',
-        'telefone',
-        'email',
-        'escolaridade',
-
-        // Naturalidade
-        'muni_nasc',
-        'uf_nasc',
-
-        // Endereço
-        'cep',
-        'muni_resid',
-        'uf_resid',
-        'logradouro',
-        'numero',
-        'complemento',
-        'bairro',
-
-        // Documentos
-        'cpf',
-        'pis',
-        'rg',
-        'rg_orgao',
-        'rg_orgao_uf',
-        'rg_data_emissao',
-        'titulo_eleitor',
-        'titulo_zona',
-        'titulo_secao',
-        'certificado_reservista',
-
         // Banco
         'banco_nome',
         'banco_cod',
         'agencia',
         'agencia_digito',
-        'conta_digito',
         'conta',
+        'conta_digito',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($bolsa) {
+            $plainTextToken = Str::random(40);
+            $bolsa->token = hash('sha256', $plainTextToken);
+            $bolsa->token_expires_at = now()->addDays(14);
+        });
+    }
 
     public function user(): BelongsTo
     {
@@ -81,5 +65,19 @@ class Bolsa extends Model
     public function documentos(): HasMany
     {
         return $this->hasMany(Documento::class);
+    }
+
+    public function bolsista(): BelongsTo
+    {
+        return $this->belongsTo(Bolsista::class);
+    }
+
+    public function scopeSearch($query, string $search)
+    {
+        return $query->where('nome', 'like', "%{$search}%")
+            ->orWhere('projeto_cod', 'like', "%{$search}%")
+            ->orWhere('projeto_nome', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->orWhere('cpf', 'like', "%{$search}%");
     }
 }

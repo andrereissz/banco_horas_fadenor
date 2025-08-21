@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\BolsaEscolaridade;
+use App\Enums\BolsaEstadoCivil;
+use App\Enums\BolsaRacaCor;
+use App\Notifications\ResetPasswordBolsistaNotification;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User;
+
+class Bolsista extends User
+{
+    use HasFactory, HasUuids;
+
+    protected $casts = [
+        'escolaridade' => BolsaEscolaridade::class,
+        'estado_civil' => BolsaEstadoCivil::class,
+        'raca_cor' => BolsaRacaCor::class,
+    ];
+
+    protected $fillable = [
+        // Dados pessoais
+        'nome',
+        'data_nasc',
+        'nome_mae',
+        'nome_pai',
+        'estado_civil',
+        'sexo',
+        'raca_cor',
+        'telefone',
+        'email',
+        'escolaridade',
+
+        // Naturalidade
+        'est_pais',
+        'muni_nasc',
+        'uf_nasc',
+
+        // Endereço
+        'cep',
+        'muni_resid',
+        'uf_resid',
+        'logradouro',
+        'numero',
+        'complemento',
+        'bairro',
+
+        // Documentos
+        'cpf',
+        'pis',
+        'rg',
+        'rg_orgao',
+        'rg_orgao_uf',
+        'rg_data_emissao',
+        'titulo_eleitor',
+        'titulo_zona',
+        'titulo_secao',
+        'certificado_reservista',
+
+        // Senha
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function bolsas(): HasMany
+    {
+        return $this->hasMany(Bolsa::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
+
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordBolsistaNotification($token));
+    }
+}

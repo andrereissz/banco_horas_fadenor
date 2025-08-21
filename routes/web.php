@@ -1,27 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('home'); // ou redirecione para fundacao.login
+})->name('login');
+
+Route::prefix('fundacao')->name('fundacao.')->group(function () {
+    require __DIR__.'/fundacao.php';
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::prefix('bolsistas')->name('bolsistas.')->group(function () {
+    require __DIR__.'/bolsistas.php';
 });
-
-Route::get('/solicitar-bolsa', function () {
-    return view('bolsas.create');
-})->middleware(['auth', 'verified', 'can:administrar bolsa'])->name('solicitar-bolsa');
-
-
-
-require __DIR__.'/auth.php';

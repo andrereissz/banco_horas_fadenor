@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,8 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectGuestsTo('/');
+        $middleware->redirectUsersTo(fn (Request $request) => Auth::guard('bolsistas')->check()
+            ? route('bolsistas.dashboard')
+            : route('fundacao.dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
