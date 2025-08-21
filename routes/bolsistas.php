@@ -26,6 +26,9 @@ Route::middleware(ValidToken::class)->group(function () {
 });
 
 Route::middleware('auth:bolsistas')->group(function () {
+    Route::get('/', function () {
+        return view('bolsistas.dashboard');
+    })->name('dashboard');
     Route::post('/logout', [LogoutController::class, 'destroy'])->name('logout');
     Route::get('/confirmar/{bolsa_token}', function ($bolsa_token) {
         return view('bolsistas.confirmar', ['bolsa_token' => $bolsa_token]);
