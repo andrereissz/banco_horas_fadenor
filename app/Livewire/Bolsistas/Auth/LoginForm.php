@@ -18,7 +18,7 @@ class LoginForm extends Component
     protected function rules(): array
     {
         return [
-            'cpf' => ['required'],
+            'cpf' => ['required', 'string', 'size:14'],
             'password' => ['required'],
         ];
     }
@@ -35,6 +35,7 @@ class LoginForm extends Component
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
+            'size' => 'O campo :attribute tem tamanho incorreto.',
         ];
     }
 
@@ -53,7 +54,8 @@ class LoginForm extends Component
                 if($token) {
                     return redirect()->route('bolsistas.confirmar', ['bolsa_token' => $token]);
                 }
-                return redirect()->route('bolsistas.dashboard');
+                flash()->success('Login realizado com sucesso.');
+                return redirect()->route('bolsistas.login');
             }
 
             flash()->error('CPF ou senha incorretos.');

@@ -17,7 +17,7 @@ class CheckCpfForm extends Component
     protected function rules(): array
     {
         return [
-            'cpf' => ['required'],
+            'cpf' => ['required', 'string', 'size:14'],
         ];
     }
 
@@ -33,6 +33,7 @@ class CheckCpfForm extends Component
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
+            'size' => 'O campo :attribute tem tamanho incorreto.',
         ];
     }
 
