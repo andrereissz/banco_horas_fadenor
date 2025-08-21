@@ -13,7 +13,7 @@
         <div class="form-control w-full">
             <x-input-label for="cpf" :value="'CPF'" />
             <x-inputs.input-cpf id="cpf" name="cpf" class="input input-bordered w-full" required
-                wire:model="cpf" />
+                wire:model="cpf" data-cpf />
             @error('cpf')
                 <label class="label">
                     <span class="label-text-alt text-error">{{ $message }}</span>
