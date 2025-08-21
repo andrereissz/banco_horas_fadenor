@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\BolsaStatus;
 use App\Services\Interfaces\Bolsas\BolsaServiceInterface;
 use Closure;
 use Illuminate\Http\Request;
@@ -22,12 +23,12 @@ class ValidToken
     {
         $token = $request->route('bolsa_token');
 
-        if ($this->bolsaService->checkToken($this->bolsaService->findBolsaByToken($token))) {
-            $request->attributes->set('bolsa_token', $token);
-            return $next($request);
+        if ($token == null || $this->bolsaService->findBolsaByToken($token) == null || $this->bolsaService->findBolsaByToken($token)->status != BolsaStatus::AguardandoResposta || !$this->bolsaService->checkToken($this->bolsaService->findBolsaByToken($token))) {
+            flash()->info('Solicitação de bolsa expirada ou inexistente.');
+            return redirect()->route('bolsistas.login');
         }
 
-        flash()->info('Solicitação de bolsa expirada ou inexistente.');
-        return redirect()->route('bolsistas.login');
+        $request->attributes->set('bolsa_token', $token);
+        return $next($request);
     }
 }
